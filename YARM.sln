@@ -1,10 +1,49 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.13
+VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2B4E2973-E3E4-4ED5-93D9-08673974B5F4}"
+	ProjectSection(SolutionItems) = preProject
+		Settings.StyleCop = Settings.StyleCop
+		YARM.sln.DotSettings = YARM.sln.DotSettings
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{310A3A4A-4D6E-4F2D-B6AA-3036F28DA301}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{3C7E004D-5A49-43D2-B976-32EE5AD2396F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yarm.FunctionApp", "src\Yarm.FunctionApp\Yarm.FunctionApp.csproj", "{0705FCC0-E44A-4586-9227-8E01962AFACE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yarm.Functions", "src\Yarm.Functions\Yarm.Functions.csproj", "{C68D6249-AB03-4C24-979C-EC367C14027B}"
+EndProject
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "Yarm.ResourceGroup", "src\Yarm.ResourceGroup\Yarm.ResourceGroup.deployproj", "{A8EBC542-76F4-4528-941E-DF78E93541CB}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0705FCC0-E44A-4586-9227-8E01962AFACE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0705FCC0-E44A-4586-9227-8E01962AFACE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0705FCC0-E44A-4586-9227-8E01962AFACE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0705FCC0-E44A-4586-9227-8E01962AFACE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C68D6249-AB03-4C24-979C-EC367C14027B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C68D6249-AB03-4C24-979C-EC367C14027B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C68D6249-AB03-4C24-979C-EC367C14027B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C68D6249-AB03-4C24-979C-EC367C14027B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8EBC542-76F4-4528-941E-DF78E93541CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8EBC542-76F4-4528-941E-DF78E93541CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8EBC542-76F4-4528-941E-DF78E93541CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8EBC542-76F4-4528-941E-DF78E93541CB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0705FCC0-E44A-4586-9227-8E01962AFACE} = {310A3A4A-4D6E-4F2D-B6AA-3036F28DA301}
+		{C68D6249-AB03-4C24-979C-EC367C14027B} = {310A3A4A-4D6E-4F2D-B6AA-3036F28DA301}
+		{A8EBC542-76F4-4528-941E-DF78E93541CB} = {310A3A4A-4D6E-4F2D-B6AA-3036F28DA301}
 	EndGlobalSection
 EndGlobal

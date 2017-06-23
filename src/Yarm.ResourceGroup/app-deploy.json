@@ -1,0 +1,547 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environment": {
+      "allowedValues": [
+        "dev",
+        "tst",
+        "prd"
+      ],
+      "defaultValue": "dev",
+      "metadata": {
+        "description": "The deployment environment."
+      },
+      "type": "string"
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "ause",
+      "allowedValues": [
+        "aue",
+        "ause"
+      ],
+      "metadata": {
+        "description": "The deployment location."
+      }
+    },
+    "appServicePlanSkuName": {
+      "allowedValues": [
+        "F1",
+        "D1",
+        "B1",
+        "B2",
+        "B3",
+        "S1",
+        "S2",
+        "S3",
+        "P1",
+        "P2",
+        "P3",
+        "P4"
+      ],
+      "defaultValue": "S1",
+      "metadata": {
+        "description": "The name of the SKU for the App Service plan."
+      },
+      "type": "string"
+    },
+    "appServicePlanSkuCapacity": {
+      "defaultValue": 1,
+      "metadata": {
+        "description": "The capacity of the SKU for the App Service plan."
+      },
+      "minValue": 1,
+      "type": "int"
+    },
+    "webAppLogStorageContainerSasToken": {
+      "metadata": {
+        "description": "The Shared Access Signature (SAS) token for the storage container for logging for the API app."
+      },
+      "minLength": 1,
+      "type": "string"
+    },
+    "webAppRemoteDebuggingEnabled": {
+      "defaultValue": false,
+      "metadata": {
+        "description": "A value determining whether remote debugging is enabled for the API app."
+      },
+      "type": "bool"
+    },
+    "functionAppLogStorageContainerSasToken": {
+      "metadata": {
+        "description": "The Shared Access Signature (SAS) token for the storage container for logging for the function app."
+      },
+      "minLength": 1,
+      "type": "string"
+    },
+    "functionAppRemoteDebuggingEnabled": {
+      "defaultValue": false,
+      "metadata": {
+        "description": "A value determining whether remote debugging is enabled for the function app."
+      },
+      "type": "bool"
+    },
+    "functionAppStorageAccountType": {
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_GRS",
+        "Standard_ZRS",
+        "Premium_LRS"
+      ],
+      "defaultValue": "Standard_LRS",
+      "metadata": {
+        "description": "The type of the storage account for the function app."
+      },
+      "type": "string"
+    },
+    "functionsKey": {
+      "metadata": {
+        "description": "The functions key."
+      },
+      "type": "string"
+    },
+    "logRetentionInDays": {
+      "defaultValue": 0,
+      "metadata": {
+        "description": "The retention period of logging."
+      },
+      "type": "int"
+    },
+    "applicationInsightsEnabled": {
+      "defaultValue": false,
+      "metadata": {
+        "description": "A value that determines whether Application Insights is enabled for the App Service plan."
+      },
+      "type": "bool"
+    }
+  },
+  "variables": {
+    "appServicePlanName": "[concat('yarm-asp-', parameters('environment'), '-', parameters('location'))]",
+    "webAppName": "[concat('yarm-web-', parameters('environment'), '-', parameters('location'))]",
+    "functionAppName": "[concat('yarm-func-', parameters('environment'), '-', parameters('location'))]",
+    "functionAppStorageAccountName": "[concat('yarmsafunc', parameters('environment'), parameters('location'))]",
+    "logStorageAccountName": "[concat('yarmsalog', parameters('environment'), parameters('location'))]",
+    "applicationInsightsName": "[concat('yarm-ai-{0}-', parameters('environment'), '-', parameters('location'))]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-08-01",
+      "location": "[resourceGroup().location]",
+      "name": "[variables('appServicePlanName')]",
+      "properties": {
+        "name": "[variables('appServicePlanName')]"
+      },
+      "sku": {
+        "capacity": "[parameters('appServicePlanSkuCapacity')]",
+        "name": "[parameters('appServicePlanSkuName')]"
+      },
+      "tags": {
+        "displayName": "[variables('appServicePlanName')]"
+      },
+      "type": "Microsoft.Web/serverfarms"
+    },
+    {
+      "apiVersion": "2015-08-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+      ],
+      "kind": "web",
+      "location": "[resourceGroup().location]",
+      "name": "[variables('webAppName')]",
+      "properties": {
+        "clientAffinityEnabled": false,
+        "name": "[variables('webAppName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+      },
+      "resources": [
+        {
+          "apiVersion": "2015-08-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('webAppName'))]"
+          ],
+          "name": "appsettings",
+          "properties": {
+            "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(resourceId('Microsoft.Insights/components', replace(variables('applicationInsightsName'), '{0}', 'component-web')), '2014-04-01').InstrumentationKey]",
+            "DIAGNOSTICS_AZUREBLOBCONTAINERSASURL": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('webAppName'), '/applicationlogs', parameters('webAppLogStorageContainerSasToken'))]",
+            "DIAGNOSTICS_AZUREBLOBRETENTIONINDAYS": "[parameters('logRetentionInDays')]",
+            "WEBSITE_HTTPLOGGING_CONTAINER_URL": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('webAppName'), '/httplogs', parameters('webAppLogStorageContainerSasToken'))]",
+            "WEBSITE_HTTPLOGGING_RETENTION_DAYS": "[parameters('logRetentionInDays')]",
+            "FunctionsBaseUri": "[concat('https://', variables('functionAppName'), '.azurewebsites.net/api/')]",
+            "FunctionsKey": "[parameters('functionsKey')]"
+          },
+          "type": "config"
+        },
+        {
+          "apiVersion": "2015-08-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('webAppName'))]"
+          ],
+          "name": "logs",
+          "properties": {
+            "applicationLogs": {
+              "azureBlobStorage": {
+                "level": "Error",
+                "retentionInDays": "[parameters('logRetentionInDays')]",
+                "sasUrl": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('webAppName'), '/applicationlogs', parameters('webAppLogStorageContainerSasToken'))]"
+              }
+            },
+            "httpLogs": {
+              "azureBlobStorage": {
+                "enabled": true,
+                "retentionInDays": "[parameters('logRetentionInDays')]",
+                "sasUrl": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('webAppName'), '/httplogs', parameters('webAppLogStorageContainerSasToken'))]"
+              }
+            }
+          },
+          "type": "config"
+        },
+        {
+          "apiVersion": "2015-08-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('webAppName'))]"
+          ],
+          "name": "web",
+          "properties": {
+            "alwaysOn": true,
+            "remoteDebuggingEnabled": "[parameters('webAppRemoteDebuggingEnabled')]",
+            "remoteDebuggingVersion": "VS2017",
+            "use32BitWorkerProcess": false
+          },
+          "type": "config"
+        }
+      ],
+      "tags": {
+        "displayName": "[variables('webAppName')]",
+        "[concat('hidden-related:', resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName')))]": "Resource"
+      },
+      "type": "Microsoft.Web/sites"
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "location": "[resourceGroup().location]",
+      "name": "[variables('functionAppStorageAccountName')]",
+      "properties": {
+        "accountType": "[parameters('functionAppStorageAccountType')]"
+      },
+      "tags": {
+        "displayName": "[variables('functionAppStorageAccountName')]"
+      },
+      "type": "Microsoft.Storage/storageAccounts"
+    },
+    {
+      "apiVersion": "2015-08-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('functionAppStorageAccountName'))]"
+      ],
+      "kind": "functionapp",
+      "location": "[resourceGroup().location]",
+      "name": "[variables('functionAppName')]",
+      "properties": {
+        "clientAffinityEnabled": false,
+        "name": "[variables('functionAppName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+      },
+      "resources": [
+        {
+          "apiVersion": "2015-08-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]",
+            "[resourceId('Microsoft.Storage/storageAccounts', variables('functionAppStorageAccountName'))]"
+          ],
+          "name": "appsettings",
+          "properties": {
+            "AzureWebJobsDashboard": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('functionAppStorageAccountName'), ';AccountKey=', listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('functionAppStorageAccountName')), '2015-05-01-preview').key1, ';')]",
+            "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('functionAppStorageAccountName'), ';AccountKey=', listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('functionAppStorageAccountName')), '2015-05-01-preview').key1, ';')]",
+            "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(resourceId('Microsoft.Insights/components', replace(variables('applicationInsightsName'), '{0}', 'component-func')), '2014-04-01').InstrumentationKey]",
+            "DIAGNOSTICS_AZUREBLOBCONTAINERSASURL": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('functionAppName'), '/applicationlogs', parameters('functionAppLogStorageContainerSasToken'))]",
+            "DIAGNOSTICS_AZUREBLOBRETENTIONINDAYS": "[parameters('logRetentionInDays')]",
+            "FUNCTIONS_EXTENSION_VERSION": "~1",
+            "WEBSITE_HTTPLOGGING_CONTAINER_URL": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('functionAppName'), '/httplogs', parameters('functionAppLogStorageContainerSasToken'))]",
+            "WEBSITE_HTTPLOGGING_RETENTION_DAYS": "[parameters('logRetentionInDays')]"
+          },
+          "type": "config"
+        },
+        {
+          "apiVersion": "2015-08-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]"
+          ],
+          "name": "logs",
+          "properties": {
+            "applicationLogs": {
+              "azureBlobStorage": {
+                "level": "Error",
+                "retentionInDays": "[parameters('logRetentionInDays')]",
+                "sasUrl": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('functionAppName'), '/applicationlogs', parameters('functionAppLogStorageContainerSasToken'))]"
+              }
+            },
+            "httpLogs": {
+              "azureBlobStorage": {
+                "enabled": true,
+                "retentionInDays": "[parameters('logRetentionInDays')]",
+                "sasUrl": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('functionAppName'), '/httplogs', parameters('functionAppLogStorageContainerSasToken'))]"
+              }
+            }
+          },
+          "type": "config"
+        },
+        {
+          "apiVersion": "2015-08-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]"
+          ],
+          "name": "web",
+          "properties": {
+            "alwaysOn": true,
+            "remoteDebuggingEnabled": "[parameters('functionAppRemoteDebuggingEnabled')]",
+            "remoteDebuggingVersion": "VS2017",
+            "use32BitWorkerProcess": false
+          },
+          "type": "config"
+        }
+      ],
+      "tags": {
+        "[concat('hidden-related:', resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName')))]": "Resource",
+        "displayName": "[variables('functionAppName')]"
+      },
+      "type": "Microsoft.Web/sites"
+    },
+    {
+      "apiVersion": "2014-04-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+      ],
+      "location": "[resourceGroup().location]",
+      "name": "[replace(variables('applicationInsightsName'), '{0}', 'alert-asp-cpu')]",
+      "properties": {
+        "action": {
+          "customEmails": [],
+          "odata.type": "Microsoft.Azure.Management.Insights.Models.RuleEmailAction",
+          "sendToServiceOwners": true
+        },
+        "condition": {
+          "dataSource": {
+            "metricName": "CpuPercentage",
+            "odata.type": "Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource",
+            "resourceUri": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+          },
+          "odata.type": "Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition",
+          "operator": "GreaterThan",
+          "threshold": 90,
+          "windowSize": "PT15M"
+        },
+        "description": "[concat('The average CPU is high across all the instances of ', variables('appServicePlanName'))]",
+        "isEnabled": "[parameters('applicationInsightsEnabled')]",
+        "name": "[replace(variables('applicationInsightsName'), '{0}', 'alert-asp-cpu')]"
+      },
+      "tags": {
+        "displayName": "[replace(variables('applicationInsightsName'), '{0}', 'alert-asp-cpu')]",
+        "[concat('hidden-link:', resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName')))]": "Resource"
+      },
+      "type": "Microsoft.Insights/alertrules"
+    },
+    {
+      "apiVersion": "2014-04-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+      ],
+      "location": "[resourceGroup().location]",
+      "name": "[replace(variables('applicationInsightsName'), '{0}', 'alert-asp-httpqueue')]",
+      "properties": {
+        "action": {
+          "customEmails": [],
+          "odata.type": "Microsoft.Azure.Management.Insights.Models.RuleEmailAction",
+          "sendToServiceOwners": true
+        },
+        "condition": {
+          "dataSource": {
+            "metricName": "HttpQueueLength",
+            "odata.type": "Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource",
+            "resourceUri": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+          },
+          "odata.type": "Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition",
+          "operator": "GreaterThan",
+          "threshold": 100,
+          "windowSize": "PT5M"
+        },
+        "description": "[concat('The HTTP queue for the instances of ', variables('appServicePlanName'), ' has a large number of pending requests.')]",
+        "isEnabled": "[parameters('applicationInsightsEnabled')]",
+        "name": "[replace(variables('applicationInsightsName'), '{0}', 'alert-asp-httpqueue')]"
+      },
+      "tags": {
+        "displayName": "[replace(variables('applicationInsightsName'), '{0}', 'alert-asp-httpqueue')]",
+        "[concat('hidden-link:', resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName')))]": "Resource"
+      },
+      "type": "Microsoft.Insights/alertrules"
+    },
+    {
+      "apiVersion": "2014-04-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', variables('webAppName'))]"
+      ],
+      "location": "[resourceGroup().location]",
+      "name": "[replace(variables('applicationInsightsName'), '{0}', 'alert-web-http403')]",
+      "properties": {
+        "action": {
+          "customEmails": [],
+          "odata.type": "Microsoft.Azure.Management.Insights.Models.RuleEmailAction",
+          "sendToServiceOwners": true
+        },
+        "condition": {
+          "dataSource": {
+            "odata.type": "Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource",
+            "resourceUri": "[resourceId('Microsoft.Web/sites', variables('webAppName'))]",
+            "metricName": "Http403"
+          },
+          "odata.type": "Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition",
+          "operator": "GreaterThan",
+          "threshold": 0,
+          "windowSize": "PT5M"
+        },
+        "description": "[concat(variables('webAppName'), ' has some requests that are forbidden, status code 403.')]",
+        "isEnabled": "[parameters('applicationInsightsEnabled')]",
+        "name": "[replace(variables('applicationInsightsName'), '{0}', 'alert-web-http403')]"
+      },
+      "tags": {
+        "displayName": "[replace(variables('applicationInsightsName'), '{0}', 'alert-web-http403')]",
+        "[concat('hidden-link:', resourceId('Microsoft.Web/sites', variables('webAppName')))]": "Resource"
+      },
+      "type": "Microsoft.Insights/alertrules"
+    },
+    {
+      "apiVersion": "2014-04-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', variables('webAppName'))]"
+      ],
+      "location": "[resourceGroup().location]",
+      "name": "[replace(variables('applicationInsightsName'), '{0}', 'alert-web-http5xx')]",
+      "properties": {
+        "action": {
+          "customEmails": [],
+          "odata.type": "Microsoft.Azure.Management.Insights.Models.RuleEmailAction",
+          "sendToServiceOwners": true
+        },
+        "condition": {
+          "dataSource": {
+            "metricName": "Http5xx",
+            "odata.type": "Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource",
+            "resourceUri": "[resourceId('Microsoft.Web/sites', variables('webAppName'))]"
+          },
+          "odata.type": "Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition",
+          "operator": "GreaterThan",
+          "threshold": 0,
+          "windowSize": "PT5M"
+        },
+        "description": "[concat(variables('webAppName'), ' has some server errors, status code 5xx.')]",
+        "isEnabled": "[parameters('applicationInsightsEnabled')]",
+        "name": "[replace(variables('applicationInsightsName'), '{0}', 'alert-web-http5xx')]"
+      },
+      "tags": {
+        "displayName": "[replace(variables('applicationInsightsName'), '{0}', 'alert-web-http5xx')]",
+        "[concat('hidden-link:', resourceId('Microsoft.Web/sites', variables('webAppName')))]": "Resource"
+      },
+      "type": "Microsoft.Insights/alertrules"
+    },
+    {
+      "apiVersion": "2014-04-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+      ],
+      "location": "[resourceGroup().location]",
+      "name": "[replace(variables('applicationInsightsName'), '{0}', 'autoscale-asp')]",
+      "properties": {
+        "enabled": "[parameters('applicationInsightsEnabled')]",
+        "name": "[replace(variables('applicationInsightsName'), '{0}', 'autoscale-asp')]",
+        "profiles": [
+          {
+            "capacity": {
+              "default": 1,
+              "maximum": 2,
+              "minimum": 1
+            },
+            "name": "Default",
+            "rules": [
+              {
+                "metricTrigger": {
+                  "metricName": "CpuPercentage",
+                  "metricResourceUri": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+                  "operator": "GreaterThan",
+                  "statistic": "Average",
+                  "threshold": 80,
+                  "timeAggregation": "Average",
+                  "timeGrain": "PT1M",
+                  "timeWindow": "PT10M"
+                },
+                "scaleAction": {
+                  "cooldown": "PT10M",
+                  "direction": "Increase",
+                  "type": "ChangeCount",
+                  "value": 1
+                }
+              },
+              {
+                "metricTrigger": {
+                  "metricName": "CpuPercentage",
+                  "metricResourceUri": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+                  "operator": "LessThan",
+                  "statistic": "Average",
+                  "threshold": 60,
+                  "timeAggregation": "Average",
+                  "timeGrain": "PT1M",
+                  "timeWindow": "PT1H"
+                },
+                "scaleAction": {
+                  "direction": "Decrease",
+                  "type": "ChangeCount",
+                  "value": 1,
+                  "cooldown": "PT1H"
+                }
+              }
+            ]
+          }
+        ],
+        "targetResourceUri": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+      },
+      "tags": {
+        "displayName": "[replace(variables('applicationInsightsName'), '{0}', 'autoscale-asp')]",
+        "[concat('hidden-link:', resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName')))]": "Resource"
+      },
+      "type": "Microsoft.Insights/autoscalesettings"
+    },
+    {
+      "apiVersion": "2014-04-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', variables('webAppName'))]"
+      ],
+      "kind": "web",
+      "location": "East US",
+      "name": "[replace(variables('applicationInsightsName'), '{0}', 'component-web')]",
+      "properties": {
+        "ApplicationId": "[variables('webAppName')]"
+      },
+      "tags": {
+        "displayName": "[replace(variables('applicationInsightsName'), '{0}', 'component-web')]"
+      },
+      "type": "Microsoft.Insights/components"
+    },
+    {
+      "apiVersion": "2014-04-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]"
+      ],
+      "kind": "other",
+      "location": "East US",
+      "name": "[replace(variables('applicationInsightsName'), '{0}', 'component-func')]",
+      "properties": {
+        "ApplicationId": "[variables('functionAppName')]"
+      },
+      "tags": {
+        "displayName": "[replace(variables('applicationInsightsName'), '{0}', 'component-func')]"
+      },
+      "type": "Microsoft.Insights/components"
+    }
+  ],
+  "outputs": {}
+}

@@ -1,0 +1,60 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environment": {
+      "allowedValues": [
+        "dev",
+        "tst",
+        "prd"
+      ],
+      "defaultValue": "dev",
+      "metadata": {
+        "description": "The deployment environment."
+      },
+      "type": "string"
+    },
+    "location": {
+      "allowedValues": [
+        "aue",
+        "ause"
+      ],
+      "defaultValue": "ause",
+      "metadata": {
+        "description": "The deployment location."
+      },
+      "type": "string"
+    },
+    "logStorageAccountType": {
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_GRS",
+        "Standard_ZRS",
+        "Premium_LRS"
+      ],
+      "defaultValue": "Standard_LRS",
+      "metadata": {
+        "description": "The storage account type for the function logging."
+      },
+      "type": "string"
+    }
+  },
+  "variables": {
+    "logStorageAccountName": "[concat('yarmsalog', parameters('environment'), parameters('location'))]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-06-15",
+      "location": "[resourceGroup().location]",
+      "name": "[variables('logStorageAccountName')]",
+      "properties": {
+        "accountType": "[parameters('logStorageAccountType')]"
+      },
+      "tags": {
+        "displayName": "[variables('logStorageAccountName')]"
+      },
+      "type": "Microsoft.Storage/storageAccounts"
+    }
+  ],
+  "outputs": {}
+}

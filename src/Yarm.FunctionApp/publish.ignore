@@ -1,0 +1,16 @@
+# You can declare files/folders that should be ignored here. For example
+
+# how to exclude files
+#	sample.html
+#	sayed*.html
+#   \sayed.html
+
+# how to exclude folders
+#	admin\
+#	private/
+
+# prevents this file from being published
+publish.ignore
+*.wpp.targets
+
+Web*.config

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environment": {
+      "value": "dev"
+    },
+    "location": {
+      "value": "ause"
+    },
+    "appServicePlanSkuName": {
+      "value": "S1"
+    },
+    "appServicePlanSkuCapacity": {
+      "value": 1
+    },
+    "webAppLogStorageContainerSasToken": {
+      "value": ""
+    },
+    "webAppRemoteDebuggingEnabled": {
+      "value": false
+    },
+    "functionAppLogStorageContainerSasToken": {
+      "value": ""
+    },
+    "functionAppRemoteDebuggingEnabled": {
+      "value": false
+    },
+    "functionAppStorageAccountType": {
+      "value": "Standard_LRS"
+    },
+    "functionsKey": {
+      "value": ""
+    },
+    "logRetentionInDays": {
+      "value": 0
+    },
+    "applicationInsightsEnabled": {
+      "value": false
+    }
+  }
+}
