@@ -153,8 +153,8 @@
             "DIAGNOSTICS_AZUREBLOBRETENTIONINDAYS": "[parameters('logRetentionInDays')]",
             "WEBSITE_HTTPLOGGING_CONTAINER_URL": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('webAppName'), '/httplogs', parameters('logStorageContainerSasToken'))]",
             "WEBSITE_HTTPLOGGING_RETENTION_DAYS": "[parameters('logRetentionInDays')]",
-            "FunctionsBaseUri": "[concat('https://', variables('functionAppName'), '.azurewebsites.net/api/')]",
-            "FunctionsKey": "[parameters('functionAppKey')]"
+            "FunctionAppBaseUri": "[concat('https://', variables('functionAppName'), '.azurewebsites.net/api/')]",
+            "FunctionAppKey": "[parameters('functionAppKey')]"
           },
           "type": "config"
         },

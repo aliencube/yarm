@@ -14,3 +14,4 @@ publish.ignore
 *.wpp.targets
 
 Web*.config
+packages.config

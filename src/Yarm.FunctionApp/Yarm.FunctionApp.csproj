@@ -170,6 +170,7 @@
     <Content Include="ConvertYamlToJsonHttpTrigger\function.json" />
     <Content Include="publish.ignore" />
     <Content Include="ls.pubignore.wpp.targets" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
