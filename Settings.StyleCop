@@ -4,6 +4,7 @@
       <Value>json</Value>
       <Value>queryable</Value>
       <Value>yaml</Value>
+      <Value>enums</Value>
     </CollectionProperty>
     <StringProperty Name="Culture">en-GB</StringProperty>
   </GlobalSettings>
