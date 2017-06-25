@@ -5,6 +5,12 @@ VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2B4E2973-E3E4-4ED5-93D9-08673974B5F4}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		appveyor.yml = appveyor.yml
+		build-solution.ps1 = build-solution.ps1
+		deploy-resources.ps1 = deploy-resources.ps1
+		LICENSE = LICENSE
+		README.md = README.md
 		Settings.StyleCop = Settings.StyleCop
 		YARM.sln.DotSettings = YARM.sln.DotSettings
 	EndProjectSection

@@ -54,34 +54,6 @@
       "minValue": 1,
       "type": "int"
     },
-    "webAppLogStorageContainerSasToken": {
-      "metadata": {
-        "description": "The Shared Access Signature (SAS) token for the storage container for logging for the API app."
-      },
-      "minLength": 1,
-      "type": "string"
-    },
-    "webAppRemoteDebuggingEnabled": {
-      "defaultValue": false,
-      "metadata": {
-        "description": "A value determining whether remote debugging is enabled for the API app."
-      },
-      "type": "bool"
-    },
-    "functionAppLogStorageContainerSasToken": {
-      "metadata": {
-        "description": "The Shared Access Signature (SAS) token for the storage container for logging for the function app."
-      },
-      "minLength": 1,
-      "type": "string"
-    },
-    "functionAppRemoteDebuggingEnabled": {
-      "defaultValue": false,
-      "metadata": {
-        "description": "A value determining whether remote debugging is enabled for the function app."
-      },
-      "type": "bool"
-    },
     "functionAppStorageAccountType": {
       "allowedValues": [
         "Standard_LRS",
@@ -95,10 +67,24 @@
       },
       "type": "string"
     },
-    "functionsKey": {
+    "functionAppKey": {
       "metadata": {
-        "description": "The functions key."
+        "description": "The function app key."
       },
+      "type": "string"
+    },
+    "remoteDebuggingEnabled": {
+      "defaultValue": false,
+      "metadata": {
+        "description": "A value determining whether remote debugging is enabled for apps."
+      },
+      "type": "bool"
+    },
+    "logStorageContainerSasToken": {
+      "metadata": {
+        "description": "The Shared Access Signature (SAS) token for the storage container for logging."
+      },
+      "minLength": 1,
       "type": "string"
     },
     "logRetentionInDays": {
@@ -163,12 +149,12 @@
           "name": "appsettings",
           "properties": {
             "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(resourceId('Microsoft.Insights/components', replace(variables('applicationInsightsName'), '{0}', 'component-web')), '2014-04-01').InstrumentationKey]",
-            "DIAGNOSTICS_AZUREBLOBCONTAINERSASURL": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('webAppName'), '/applicationlogs', parameters('webAppLogStorageContainerSasToken'))]",
+            "DIAGNOSTICS_AZUREBLOBCONTAINERSASURL": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('webAppName'), '/applicationlogs', parameters('logStorageContainerSasToken'))]",
             "DIAGNOSTICS_AZUREBLOBRETENTIONINDAYS": "[parameters('logRetentionInDays')]",
-            "WEBSITE_HTTPLOGGING_CONTAINER_URL": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('webAppName'), '/httplogs', parameters('webAppLogStorageContainerSasToken'))]",
+            "WEBSITE_HTTPLOGGING_CONTAINER_URL": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('webAppName'), '/httplogs', parameters('logStorageContainerSasToken'))]",
             "WEBSITE_HTTPLOGGING_RETENTION_DAYS": "[parameters('logRetentionInDays')]",
             "FunctionsBaseUri": "[concat('https://', variables('functionAppName'), '.azurewebsites.net/api/')]",
-            "FunctionsKey": "[parameters('functionsKey')]"
+            "FunctionsKey": "[parameters('functionAppKey')]"
           },
           "type": "config"
         },
@@ -183,14 +169,14 @@
               "azureBlobStorage": {
                 "level": "Error",
                 "retentionInDays": "[parameters('logRetentionInDays')]",
-                "sasUrl": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('webAppName'), '/applicationlogs', parameters('webAppLogStorageContainerSasToken'))]"
+                "sasUrl": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('webAppName'), '/applicationlogs', parameters('logStorageContainerSasToken'))]"
               }
             },
             "httpLogs": {
               "azureBlobStorage": {
                 "enabled": true,
                 "retentionInDays": "[parameters('logRetentionInDays')]",
-                "sasUrl": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('webAppName'), '/httplogs', parameters('webAppLogStorageContainerSasToken'))]"
+                "sasUrl": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('webAppName'), '/httplogs', parameters('logStorageContainerSasToken'))]"
               }
             }
           },
@@ -204,7 +190,7 @@
           "name": "web",
           "properties": {
             "alwaysOn": true,
-            "remoteDebuggingEnabled": "[parameters('webAppRemoteDebuggingEnabled')]",
+            "remoteDebuggingEnabled": "[parameters('remoteDebuggingEnabled')]",
             "remoteDebuggingVersion": "VS2017",
             "use32BitWorkerProcess": false
           },
@@ -255,10 +241,10 @@
             "AzureWebJobsDashboard": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('functionAppStorageAccountName'), ';AccountKey=', listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('functionAppStorageAccountName')), '2015-05-01-preview').key1, ';')]",
             "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('functionAppStorageAccountName'), ';AccountKey=', listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('functionAppStorageAccountName')), '2015-05-01-preview').key1, ';')]",
             "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(resourceId('Microsoft.Insights/components', replace(variables('applicationInsightsName'), '{0}', 'component-func')), '2014-04-01').InstrumentationKey]",
-            "DIAGNOSTICS_AZUREBLOBCONTAINERSASURL": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('functionAppName'), '/applicationlogs', parameters('functionAppLogStorageContainerSasToken'))]",
+            "DIAGNOSTICS_AZUREBLOBCONTAINERSASURL": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('functionAppName'), '/applicationlogs', parameters('logStorageContainerSasToken'))]",
             "DIAGNOSTICS_AZUREBLOBRETENTIONINDAYS": "[parameters('logRetentionInDays')]",
             "FUNCTIONS_EXTENSION_VERSION": "~1",
-            "WEBSITE_HTTPLOGGING_CONTAINER_URL": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('functionAppName'), '/httplogs', parameters('functionAppLogStorageContainerSasToken'))]",
+            "WEBSITE_HTTPLOGGING_CONTAINER_URL": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('functionAppName'), '/httplogs', parameters('logStorageContainerSasToken'))]",
             "WEBSITE_HTTPLOGGING_RETENTION_DAYS": "[parameters('logRetentionInDays')]"
           },
           "type": "config"
@@ -274,14 +260,14 @@
               "azureBlobStorage": {
                 "level": "Error",
                 "retentionInDays": "[parameters('logRetentionInDays')]",
-                "sasUrl": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('functionAppName'), '/applicationlogs', parameters('functionAppLogStorageContainerSasToken'))]"
+                "sasUrl": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('functionAppName'), '/applicationlogs', parameters('logStorageContainerSasToken'))]"
               }
             },
             "httpLogs": {
               "azureBlobStorage": {
                 "enabled": true,
                 "retentionInDays": "[parameters('logRetentionInDays')]",
-                "sasUrl": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('functionAppName'), '/httplogs', parameters('functionAppLogStorageContainerSasToken'))]"
+                "sasUrl": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('functionAppName'), '/httplogs', parameters('logStorageContainerSasToken'))]"
               }
             }
           },
@@ -295,7 +281,7 @@
           "name": "web",
           "properties": {
             "alwaysOn": true,
-            "remoteDebuggingEnabled": "[parameters('functionAppRemoteDebuggingEnabled')]",
+            "remoteDebuggingEnabled": "[parameters('remoteDebuggingEnabled')]",
             "remoteDebuggingVersion": "VS2017",
             "use32BitWorkerProcess": false
           },
