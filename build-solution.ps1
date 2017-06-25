@@ -17,8 +17,6 @@ Write-Host "Building YARM.sln ..." -ForegroundColor Green
 msbuild .\YARM.sln /t:Rebuild /p:Configuration=$Configuration /p:Platform=$Platform
 
 # Builds Function App
-$publishUrl = $("bin\" + $Configuration + "\PublishOutput")
-
-msbuild .\src\Yarm.FunctionApp\Yarm.FunctionApp.csproj /t:Rebuild /p:Configuration=$Configuration /p:Platform=$Platform /p:OutputPath=bin /p:DeployOnBuild=true /p:PublishProfile=FolderProfile.pubxml /p:LastUsedBuildConfiguration=$Configuration /p:PublishUrl=$publishUrl
+msbuild .\src\Yarm.FunctionApp\Yarm.FunctionApp.csproj /t:Rebuild /p:Configuration=$Configuration /p:Platform=$Platform /p:OutputPath=bin /p:DeployOnBuild=true /p:PublishProfile=FolderProfile.pubxml /p:LastUsedBuildConfiguration=$Configuration
 
 Write-Host "YARM.sln built" -ForegroundColor Green
