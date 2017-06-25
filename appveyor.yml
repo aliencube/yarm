@@ -7,6 +7,15 @@
     only:
     - master
   skip_tags: true
+  skip_commits:
+    files:
+      - .gitignore
+      - appveyor.yml
+      - LICENSE
+      - README.md
+      - Settings.StyleCop
+      - YARM.sln
+      - YARM.sln.DotSettings
   image: Visual Studio 2017
   configuration: Debug
   platform: Any CPU
@@ -31,6 +40,15 @@
     only:
     - dev
   skip_tags: true
+  skip_commits:
+    files:
+      - .gitignore
+      - appveyor.yml
+      - LICENSE
+      - README.md
+      - Settings.StyleCop
+      - YARM.sln
+      - YARM.sln.DotSettings
   image: Visual Studio 2017
   configuration: Debug
   platform: Any CPU
