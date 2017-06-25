@@ -1,0 +1,90 @@
+# for master branch
+-
+  version: 1.0.{build}
+  pull_requests:
+    do_not_increment_build_number: true
+  branches:
+    only:
+    - master
+  skip_tags: true
+  image: Visual Studio 2017
+  configuration: Debug
+  platform: Any CPU
+  assembly_info:
+    patch: true
+    file: '**\AssemblyInfo.*'
+    assembly_version: '{version}'
+    assembly_file_version: '{version}'
+    assembly_informational_version: '{version}'
+  nuget:
+    account_feed: true
+    disable_publish_on_pr: true
+  build_script:
+  - ps: .\build-solution.ps1 -Configuration $env:configuration -Platform $env:platform
+
+# for dev branch
+-
+  version: 1.0.{build}
+  pull_requests:
+    do_not_increment_build_number: true
+  branches:
+    only:
+    - dev
+  skip_tags: true
+  image: Visual Studio 2017
+  configuration: Debug
+  platform: Any CPU
+  assembly_info:
+    patch: true
+    file: '**\AssemblyInfo.*'
+    assembly_version: '{version}'
+    assembly_file_version: '{version}'
+    assembly_informational_version: '{version}'
+  environment:
+    resource_group: Yarm.ResourceGroup
+    functionapp: Yarm.FunctionApp
+    webapp: Yarm.WebApp
+    client_id:
+      secure: Q8q1b811BOau2qm8qQhVB3tI00Uvk4zTBL7ORPwR/N9yQ+2Uq9oCkf11tIG2c/RE
+    client_secret:
+      secure: lPLSz9arcv5lHGcooXohJtwZ8JvI2E+Iu1EtiYC8zVww/MHqui2bH9wAzLS71L2H
+    tenant_id:
+      secure: L7aP7fCXIoua2skFVOmC1DQEmpKV/fddFryxYsmPHjppXW+61kHGQYMAI3+RYe99
+    subscription_id:
+      secure: WLMOsC0tsgk+w9NN5SVVBX84hGltPCXuQmM+9JwX6pSnp5/EZn5ffiJXGNLqv25s
+    log_sas_token:
+      secure: jLUKzIZq05aTAFv2rHfyKRnimh7yE6UNpJv+WwTCz0Z6j/sCcg2pZ60mIVy4Eet+DyjIOworZQpK4r4jCtHrLp+X9h4dF6pGeW3vTQhkiOqd0L+ibre2VEFubpwzSfJhwE5cTJ4KkQ13gz2FvwVfU4  +QI4rnQxuFXeiVwzAmncf33AYOJgjhiVyBxrKjyocfhT3DK70NRqMAdV8pLHIKTQ==
+    functionapp_key:
+      secure: +EYWVIdQ1vQIcCcjcqKbXjEXgAeoJtPpknrXkr3CZO7vZ+sRvvN+V0VhjEAMNXlMe9PKlaXDWfZ+5MmC11L47g==
+    environment: dev
+    location: ause
+    website: yarm-func-dev-ause
+  nuget:
+    account_feed: true
+    disable_publish_on_pr: true
+  build_script:
+  - ps: .\build-solution.ps1 -Configuration $env:configuration -Platform $env:platform
+  artifacts:
+  - path: .\src\$(resource_group)\bin\$(configuration)
+    name: Yarm.ResourceGroup
+  - path: .\src\$(functionapp)\bin\_PublishOutput
+    name: Yarm.FunctionApp
+  before_deploy:
+  - ps: ./deploy-resources.ps1 -TenantId $env:tenant_id -SubscriptionId $env:subscription_id -ClientId $env:client_id -ClientSecret $env:client_secret -Environment $env:environment -Location   $env:location -LogStorageContainerSasToken $env:log_sas_token -FunctionAppKey $env:functionapp_key
+  deploy:
+  - provider: WebDeploy
+    server: https://$(website).scm.azurewebsites.net/msdeploy.axd?site=$(website)
+    website: $(website)
+    username: $$(website)
+    password:
+      secure: J1pbB/cXimqT13z/4bUeEp4jtouOlABa8NQPLcWn3/lMys3Lr/nONMl4Pr8dtF2cTS9r0Rji0/rIgmejzga5fw==
+    artifact: Yarm.FunctionApp
+    remove_files: true
+    on:
+      branch: dev
+
+# for release/all branch
+
+# for release/web branch
+
+# for release/func branch
