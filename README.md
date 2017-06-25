@@ -2,6 +2,8 @@
 
 A simple application that converts ARM templates written in YAML to JSON or vice versa.
 
+[![Build status](https://ci.appveyor.com/api/projects/status/7e2d33yhha1th7d6/branch/dev?svg=true)](https://ci.appveyor.com/project/justinyoo/yarm/branch/dev)
+
 
 ## Contribution ##
 
