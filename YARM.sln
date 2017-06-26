@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yarm.Extensions", "src\Yarm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yarm.Extensions.Tests", "test\Yarm.Extensions.Tests\Yarm.Extensions.Tests.csproj", "{8F492FCF-2A17-46E9-8E39-3E48562D3EC9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yarm.Services.Tests", "test\Yarm.Services.Tests\Yarm.Services.Tests.csproj", "{7680D6AB-E6B0-4263-9D12-494532064D66}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{8F492FCF-2A17-46E9-8E39-3E48562D3EC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F492FCF-2A17-46E9-8E39-3E48562D3EC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F492FCF-2A17-46E9-8E39-3E48562D3EC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7680D6AB-E6B0-4263-9D12-494532064D66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7680D6AB-E6B0-4263-9D12-494532064D66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7680D6AB-E6B0-4263-9D12-494532064D66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7680D6AB-E6B0-4263-9D12-494532064D66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,5 +85,6 @@ Global
 		{62BCC7F5-AFFD-4429-8EDA-2B0959ED0D35} = {310A3A4A-4D6E-4F2D-B6AA-3036F28DA301}
 		{DC23FCBB-6FBA-487B-B4C1-8BE3B5FD8F9A} = {310A3A4A-4D6E-4F2D-B6AA-3036F28DA301}
 		{8F492FCF-2A17-46E9-8E39-3E48562D3EC9} = {3C7E004D-5A49-43D2-B976-32EE5AD2396F}
+		{7680D6AB-E6B0-4263-9D12-494532064D66} = {3C7E004D-5A49-43D2-B976-32EE5AD2396F}
 	EndGlobalSection
 EndGlobal

@@ -12,7 +12,7 @@ namespace Yarm.Services
     /// <summary>
     /// This represents the service entity for the GitHub REST API calls.
     /// </summary>
-    public class GitHubService
+    public class GitHubService : IGitHubService
     {
         private const string GitHubContentUri = "https://api.github.com/repos/{0}/{1}/contents";
         private const string AzureUsername = "Azure";
@@ -20,6 +20,8 @@ namespace Yarm.Services
         private const string ContributionGuideDirectory = "1-CONTRIBUTION-GUIDE";
 
         private readonly HttpClient _httpClient;
+
+        private bool _disposed;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GitHubService"/> class.
@@ -39,10 +41,25 @@ namespace Yarm.Services
             var requestUri = string.Format(GitHubContentUri, AzureUsername, ArmTemplateRepository);
             using (var response = await this._httpClient.GetAsync(requestUri).ConfigureAwait(false))
             {
+                response.EnsureSuccessStatusCode();
+
                 var contents = await response.Content.ReadAsAsync<List<ContentModel>>().ConfigureAwait(false);
 
                 return contents.Where(IsContentEligible).ToList();
             }
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (this._disposed)
+            {
+                return;
+            }
+
+            this._disposed = true;
         }
 
         private static bool IsContentEligible(ContentModel model)
