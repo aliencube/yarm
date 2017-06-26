@@ -13,30 +13,22 @@ namespace Yarm.Services.Tests.Fixtures
         private bool _disposed;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GitHubServiceFixture"/> class.
+        /// Creates a new instance of the <see cref="IGitHubService"/> class.
         /// </summary>
-        public GitHubServiceFixture()
+        /// <param name="res"><see cref="HttpResponseMessage"/> instance.</param>
+        /// <returns>Returns the <see cref="IGitHubService"/> instance.</returns>
+        public IGitHubService CreateInstance(HttpResponseMessage res)
         {
-            this.Response = new HttpResponseMessage();
-
-            var messageOptions = new HttpMessageOptions() { HttpResponseMessage = this.Response };
+            var messageOptions = new HttpMessageOptions() { HttpResponseMessage = res };
             var options = new[] { messageOptions };
             var handler = new FakeHttpMessageHandler(options);
 
             var client = new HttpClient(handler);
 
-            this.GitHubService = new GitHubService(client);
+            var service = new GitHubService(client);
+
+            return service;
         }
-
-        /// <summary>
-        /// Gets the <see cref="HttpResponseMessage"/> instance.
-        /// </summary>
-        public HttpResponseMessage Response { get; }
-
-        /// <summary>
-        /// Gets the <see cref="IGitHubService"/> instance.
-        /// </summary>
-        public IGitHubService GitHubService { get; }
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.

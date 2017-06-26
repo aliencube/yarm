@@ -35,6 +35,8 @@ namespace Yarm.Functions
             }
 
             this.ReleaseUnmanagedResources();
+
+            this._disposed = true;
         }
 
         private void ReleaseManagedResources()

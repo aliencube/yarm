@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
 
-using Yarm.Models.Enums;
-
 namespace Yarm.Models.GitHub
 {
     /// <summary>
@@ -9,8 +7,6 @@ namespace Yarm.Models.GitHub
     /// </summary>
     public class ContentModel
     {
-        private string _contentTypeValue;
-
         /// <summary>
         /// Gets or sets the content name.
         /// </summary>
@@ -55,22 +51,10 @@ namespace Yarm.Models.GitHub
         public object DownloadUrl { get; set; }
 
         /// <summary>
-        /// Sets the content type.
+        /// Gets or sets the content type.
         /// </summary>
         [JsonProperty("type")]
-        public string ContentTypeValue
-        {
-            set
-            {
-                this._contentTypeValue = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="Enums.ContentType"/> instance.
-        /// </summary>
-        [JsonIgnore]
-        public ContentType ContentType => this._contentTypeValue;
+        public string ContentType { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="LinksModel"/> instance.
