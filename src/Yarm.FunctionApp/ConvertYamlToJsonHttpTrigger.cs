@@ -1,8 +1,11 @@
-﻿using System.Net;
+﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.Logging;
+
+using Yarm.Functions;
+using Yarm.Functions.FunctionFactories;
 
 namespace Yarm.FunctionApp
 {
@@ -12,6 +15,11 @@ namespace Yarm.FunctionApp
     public static class ConvertYamlToJsonHttpTrigger
     {
         /// <summary>
+        /// Gets or sets the <see cref="FunctionFactory"/> instance.
+        /// </summary>
+        public static FunctionFactory FunctionFactory { get; set; } = new FunctionFactory();
+
+        /// <summary>
         /// Invokes the HTTP trigger.
         /// </summary>
         /// <param name="req"><see cref="HttpRequestMessage"/> instance.</param>
@@ -19,7 +27,7 @@ namespace Yarm.FunctionApp
         /// <returns>Returns the <see cref="HttpResponseMessage"/> instance.</returns>
         public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, ILogger log)
         {
-            return req.CreateResponse(HttpStatusCode.OK);
+            throw new NotImplementedException();
         }
     }
 }

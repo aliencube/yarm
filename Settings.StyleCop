@@ -1,10 +1,15 @@
 <StyleCopSettings Version="105">
   <GlobalSettings>
     <CollectionProperty Name="RecognizedWords">
+      <Value>dev</Value>
+      <Value>enums</Value>
+      <Value>github</Value>
       <Value>json</Value>
       <Value>queryable</Value>
+      <Value>querystring</Value>
+      <Value>serilog</Value>
+      <Value>serilog-extensions-logging</Value>
       <Value>yaml</Value>
-      <Value>enums</Value>
     </CollectionProperty>
     <StringProperty Name="Culture">en-GB</StringProperty>
   </GlobalSettings>

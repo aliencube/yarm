@@ -170,6 +170,7 @@
     <Content Include="ConvertYamlToJsonHttpTrigger\function.json" />
     <Content Include="publish.ignore" />
     <Content Include="ls.pubignore.wpp.targets" />
+    <Content Include="GetArmTemplateDirectoriesHttpTrigger\function.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -182,8 +183,19 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GetArmTemplateDirectoriesHttpTrigger.cs" />
     <Compile Include="ConvertYamlToJsonHttpTrigger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Yarm.Extensions\Yarm.Extensions.csproj">
+      <Project>{dc23fcbb-6fba-487b-b4c1-8be3b5fd8f9a}</Project>
+      <Name>Yarm.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yarm.Functions\Yarm.Functions.csproj">
+      <Project>{c68d6249-ab03-4c24-979c-ec367c14027b}</Project>
+      <Name>Yarm.Functions</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

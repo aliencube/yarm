@@ -12,6 +12,21 @@ namespace Yarm.Extensions.Tests
     public class Int32ExtensionsTests
     {
         /// <summary>
+        /// Tests whether the method should return result or not.
+        /// </summary>
+        /// <param name="value">Value to check.</param>
+        /// <param name="comparer">Value to compare.</param>
+        /// <param name="expected">Value to expect.</param>
+        [Theory]
+        [InlineData(0, 1, true)]
+        [InlineData(1, 0, false)]
+        public void Given_Values_IsLessThanOrEqualTo_ShouldReturn_Result(int value, int comparer, bool expected)
+        {
+            var result = Int32Extensions.IsLessThanOrEqualTo(value, comparer);
+            result.Should().Be(expected);
+        }
+
+        /// <summary>
         /// Tests whether the method should throw an exception or not.
         /// </summary>
         /// <param name="value">Value to be compared.</param>

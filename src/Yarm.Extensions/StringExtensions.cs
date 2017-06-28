@@ -97,6 +97,19 @@ namespace Yarm.Extensions
         /// <summary>
         /// Checks whether the given list of items contains the item or not, regardless of casing.
         /// </summary>
+        /// <param name="value">Value to compare.</param>
+        /// <param name="comparer">Comparing value.</param>
+        /// <returns>Returns <c>True</c>, if the string value contains the comparer, regardless of casing; otherwise returns <c>False</c>.</returns>
+        public static bool ContainsEquivalent(this string value, string comparer)
+        {
+            value.ThrowIfNullOrWhiteSpace();
+
+            return !comparer.IsNullOrWhiteSpace() && value.ToLowerInvariant().Contains(comparer.ToLowerInvariant());
+        }
+
+        /// <summary>
+        /// Checks whether the given list of items contains the item or not, regardless of casing.
+        /// </summary>
         /// <param name="items">List of items.</param>
         /// <param name="item">Item to check.</param>
         /// <returns>Returns <c>True</c>, if the list of items contains the item; otherwise returns <c>False</c>.</returns>

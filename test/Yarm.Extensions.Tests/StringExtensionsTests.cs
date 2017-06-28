@@ -179,8 +179,28 @@ namespace Yarm.Extensions.Tests
         [Fact]
         public void Given_NullParameter_ContainsEquivalent_ShouldThrow_Exception()
         {
-            Action action = () => { var result = StringExtensions.ContainsEquivalent((IEnumerable<string>)null, "value"); };
+            Action action = () => { var result = StringExtensions.ContainsEquivalent((string)null, "value"); };
             action.ShouldThrow<ArgumentNullException>();
+
+            action = () => { var result = StringExtensions.ContainsEquivalent((IEnumerable<string>)null, "value"); };
+            action.ShouldThrow<ArgumentNullException>();
+        }
+
+        /// <summary>
+        /// Tests whether the method should return result or not.
+        /// </summary>
+        /// <param name="expected">Expected result.</param>
+        /// <param name="value">Value to check.</param>
+        /// <param name="comparer">Value to compare.</param>
+        [Theory]
+        [InlineData(true, "hello", "el")]
+        [InlineData(true, "world", "wo")]
+        [InlineData(false, "hello", "wo")]
+        [InlineData(false, "world", "lo")]
+        public void Given_ParameterValues_ContainsEquivalent_ShouldReturn_Result(bool expected, string value, string comparer)
+        {
+            var result = StringExtensions.ContainsEquivalent(value, comparer);
+            result.Should().Be(expected);
         }
 
         /// <summary>
@@ -194,7 +214,7 @@ namespace Yarm.Extensions.Tests
         [InlineData(true, "world", "hello", "world")]
         [InlineData(false, "hello", "world")]
         [InlineData(false, "world", "lorem", "ipsum")]
-        public void Given_Parameters_ContainsEquivalent_ShouldReturn_Result(bool expected, string item, params string[] items)
+        public void Given_ParameterLists_ContainsEquivalent_ShouldReturn_Result(bool expected, string item, params string[] items)
         {
             var result = StringExtensions.ContainsEquivalent(items, item);
             result.Should().Be(expected);

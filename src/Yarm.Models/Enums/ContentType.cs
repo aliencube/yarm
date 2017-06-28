@@ -15,7 +15,7 @@ namespace Yarm.Models.Enums
         /// </summary>
         /// <param name="name">Enum name.</param>
         /// <param name="value">Enum value.</param>
-        public ContentType(string name, int value)
+        protected ContentType(string name, int value)
             : base(name, value)
         {
         }
@@ -37,6 +37,28 @@ namespace Yarm.Models.Enums
         public static IEnumerable<ContentType> GetAll()
         {
             return new[] { File, Directory };
+        }
+
+        /// <summary>
+        /// Parses the string into the <see cref="ContentType"/> object.
+        /// </summary>
+        /// <param name="name">Name to parse.</param>
+        /// <returns>Returns the <see cref="ContentType"/> object parsed.</returns>
+        public static ContentType Parse(string name)
+        {
+            return name.IsNullOrWhiteSpace()
+                       ? null
+                       : ContentType.GetAll().SingleOrDefault(p => p.Name.IsEquivalentTo(name));
+        }
+
+        /// <summary>
+        /// Parses the value into the <see cref="ContentType"/> object.
+        /// </summary>
+        /// <param name="value">Value to parse.</param>
+        /// <returns>Returns the <see cref="ContentType"/> object parsed.</returns>
+        public static ContentType Parse(int value)
+        {
+            return ContentType.GetAll().SingleOrDefault(p => p.Value == value);
         }
 
         /// <summary>
