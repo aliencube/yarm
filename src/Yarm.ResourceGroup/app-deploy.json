@@ -245,7 +245,11 @@
             "DIAGNOSTICS_AZUREBLOBRETENTIONINDAYS": "[parameters('logRetentionInDays')]",
             "FUNCTIONS_EXTENSION_VERSION": "~1",
             "WEBSITE_HTTPLOGGING_CONTAINER_URL": "[concat('https://', variables('logStorageAccountName'), '.blob.core.windows.net/', variables('functionAppName'), '/httplogs', parameters('logStorageContainerSasToken'))]",
-            "WEBSITE_HTTPLOGGING_RETENTION_DAYS": "[parameters('logRetentionInDays')]"
+            "WEBSITE_HTTPLOGGING_RETENTION_DAYS": "[parameters('logRetentionInDays')]",
+            "GithubApiBaseUri": "https://api.github.com/",
+            "GitHubRepositoryContentUri": "repos/{0}/{1}/contents",
+            "GitHubAzureUsername": "Azure",
+            "GitHubAzureQuickstartTemplatesRepository": "azure-quickstart-templates"
           },
           "type": "config"
         },
