@@ -144,10 +144,11 @@ namespace Yarm.Functions.FunctionFactories
         /// <typeparam name="T">Type of value.</typeparam>
         /// <param name="req">The request.</param>
         /// <param name="value">The response content.</param>
+        /// <param name="mediaType">Media type.</param>
         /// <returns>The 200 OK response.</returns>
-        protected HttpResponseMessage CreateOkResponse<T>(HttpRequestMessage req, T value)
+        protected HttpResponseMessage CreateOkResponse<T>(HttpRequestMessage req, T value, string mediaType = null)
         {
-            return this.CreateResponse(req, HttpStatusCode.OK, value);
+            return this.CreateResponse(req, HttpStatusCode.OK, value, mediaType);
         }
 
         /// <summary>
@@ -180,13 +181,61 @@ namespace Yarm.Functions.FunctionFactories
         }
 
         /// <summary>
+        /// Creates a 404 Not Found response for a request.
+        /// </summary>
+        /// <param name="req">The request.</param>
+        /// <param name="message">The response content.</param>
+        /// <returns>The 404 Not Found response.</returns>
+        protected HttpResponseMessage CreateNotFoundResponse(HttpRequestMessage req, string message)
+        {
+            var errorResponse = new ErrorResponseModel
+                                    {
+                                        StatusCode = (int)HttpStatusCode.NotFound,
+                                        Message = message
+                                    };
+
+            return this.CreateNotFoundResponse(req, errorResponse);
+        }
+
+        /// <summary>
+        /// Creates a 404 Not Found response for a request.
+        /// </summary>
+        /// <typeparam name="T">Type of value.</typeparam>
+        /// <param name="req">The request.</param>
+        /// <param name="value">The response content.</param>
+        /// <returns>The 404 Not Found response.</returns>
+        protected HttpResponseMessage CreateNotFoundResponse<T>(HttpRequestMessage req, T value)
+        {
+            return this.CreateResponse(req, HttpStatusCode.NotFound, value);
+        }
+
+        /// <summary>
         /// Creates a 415 Unsupported Media Type response for a request.
         /// </summary>
         /// <param name="req">The request.</param>
+        /// <param name="message">The response content.</param>
         /// <returns>The 415 Unsupported Media Type response.</returns>
-        protected HttpResponseMessage CreateUnsupportedMediaTypeResponse(HttpRequestMessage req)
+        protected HttpResponseMessage CreateUnsupportedMediaTypeResponse(HttpRequestMessage req, string message)
         {
-            return req.CreateResponse(HttpStatusCode.UnsupportedMediaType);
+            var errorResponse = new ErrorResponseModel
+                                    {
+                                        StatusCode = (int)HttpStatusCode.UnsupportedMediaType,
+                                        Message = message
+                                    };
+
+            return this.CreateNotFoundResponse(req, errorResponse);
+        }
+
+        /// <summary>
+        /// Creates a 415 Unsupported Media Type response for a request.
+        /// </summary>
+        /// <typeparam name="T">Type of value.</typeparam>
+        /// <param name="req">The request.</param>
+        /// <param name="value">The response content.</param>
+        /// <returns>The 415 Unsupported Media Type response.</returns>
+        protected HttpResponseMessage CreateUnsupportedMediaTypeResponse<T>(HttpRequestMessage req, T value)
+        {
+            return this.CreateResponse(req, HttpStatusCode.UnsupportedMediaType, value);
         }
 
         /// <summary>
@@ -196,9 +245,15 @@ namespace Yarm.Functions.FunctionFactories
         /// <param name="req">The request.</param>
         /// <param name="statusCode">The response status code.</param>
         /// <param name="value">The response content.</param>
+        /// <param name="mediaType">Media type.</param>
         /// <returns>The response.</returns>
-        protected HttpResponseMessage CreateResponse<T>(HttpRequestMessage req, HttpStatusCode statusCode, T value)
+        protected HttpResponseMessage CreateResponse<T>(HttpRequestMessage req, HttpStatusCode statusCode, T value, string mediaType = null)
         {
+            if (!mediaType.IsNullOrWhiteSpace())
+            {
+                return req.CreateResponse(statusCode, value, mediaType);
+            }
+
             var formatter = this.ServiceLocator.GetInstance<MediaTypeFormatter>();
 
             return req.CreateResponse(statusCode, value, formatter);

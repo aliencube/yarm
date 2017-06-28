@@ -14,7 +14,7 @@ namespace Yarm.FunctionApp
     public static class GetArmTemplateDirectoriesHttpTrigger
     {
         /// <summary>
-        /// Gets or sets the <see cref="FunctionFactory"/> instance.
+        /// Gets or sets the <see cref="Functions.FunctionFactories.FunctionFactory"/> instance.
         /// </summary>
         public static FunctionFactory FunctionFactory { get; set; } = new FunctionFactory();
 

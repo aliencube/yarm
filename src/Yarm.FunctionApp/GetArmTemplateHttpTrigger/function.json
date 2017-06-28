@@ -1,0 +1,24 @@
+﻿{
+  "disabled": false,
+
+  "scriptFile": "..\\bin\\Yarm.FunctionApp.dll",
+  "entryPoint": "Yarm.FunctionApp.GetArmTemplateHttpTrigger.Run",
+
+  "bindings": [
+    {
+      "name": "req",
+      "type": "httpTrigger",
+      "direction": "in",
+      "route": "templates/{templateName}",
+      "authLevel": "function",
+      "methods": [
+        "get"
+      ]
+    },
+    {
+      "name": "return",
+      "type": "http",
+      "direction": "out"
+    }
+  ]
+}

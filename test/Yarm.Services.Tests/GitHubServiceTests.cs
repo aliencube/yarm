@@ -7,12 +7,15 @@ using System.Threading.Tasks;
 
 using FluentAssertions;
 
+using Moq;
+
 using Newtonsoft.Json;
 
 using Xunit;
 
 using Yarm.Models.Enums;
 using Yarm.Models.GitHub;
+using Yarm.Models.Settings;
 using Yarm.Services.Tests.Fixtures;
 
 namespace Yarm.Services.Tests
@@ -42,7 +45,10 @@ namespace Yarm.Services.Tests
         [Fact]
         public void Given_NullParameter_Constructor_ShouldThrow_Exception()
         {
-            Action action = () => new GitHubService(null);
+            Action action = () => new GitHubService(null, null);
+            action.ShouldThrow<ArgumentNullException>();
+
+            action = () => new GitHubService(new Mock<IFunctionAppSettings>().Object, null);
             action.ShouldThrow<ArgumentNullException>();
         }
 

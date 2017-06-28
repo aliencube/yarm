@@ -51,6 +51,7 @@
     <Compile Include="GitHub\LinksModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\FunctionAppSettings.cs" />
+    <Compile Include="Settings\GitHubSettings.cs" />
     <Compile Include="Settings\IFunctionAppSettings.cs" />
     <Compile Include="Settings\StorageAccountSettings.cs" />
   </ItemGroup>

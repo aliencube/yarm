@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Net.Http;
+using System.Web.Http;
+using System.Web.Http.Controllers;
+using System.Web.Http.Hosting;
 
 using Yarm.Extensions;
+using Yarm.Functions.Tests.Fixtures;
 
 namespace Yarm.Functions.Tests
 {
@@ -53,7 +57,10 @@ namespace Yarm.Functions.Tests
         /// <returns>Returns the <see cref="HttpRequestMessage"/> instance.</returns>
         protected HttpRequestMessage CreateRequest(string requestUri = null, HttpContent content = null)
         {
-            var request = new HttpRequestMessage();
+            var config = new HttpConfiguration() { Formatters = { new TextPlainMediaTypeFormatter() } };
+            var context = new HttpRequestContext() { Configuration = config };
+            var request = new HttpRequestMessage() { Properties = { { HttpPropertyKeys.RequestContextKey, context } } };
+
             if (!requestUri.IsNullOrWhiteSpace())
             {
                 request.RequestUri = new Uri(requestUri);

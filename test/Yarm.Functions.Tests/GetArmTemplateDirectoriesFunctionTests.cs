@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Formatting;
 
 using FluentAssertions;
-
-using Microsoft.Practices.ServiceLocation;
 
 using Moq;
 
@@ -62,10 +59,9 @@ namespace Yarm.Functions.Tests
 
             this.Req = this.CreateRequest("http://localhost");
 
-            var function = this._fixture.ArrangeGetArmTemplateDirectoriesFunction(out Mock<IGitHubService> gitHubService, out Mock<IServiceLocator> locator);
+            var function = this._fixture.ArrangeGetArmTemplateDirectoriesFunction(out Mock<IGitHubService> gitHubService);
 
             gitHubService.Setup(p => p.GetArmTemplateDirectoriesAsync()).ReturnsAsync(models);
-            locator.Setup(p => p.GetInstance<MediaTypeFormatter>()).Returns(new JsonMediaTypeFormatter());
 
             this.Res = await function.InvokeAsync(this.Req).ConfigureAwait(false);
             this.Res.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -95,10 +91,9 @@ namespace Yarm.Functions.Tests
 
             this.Req = this.CreateRequest($"http://localhost?q={query}");
 
-            var function = this._fixture.ArrangeGetArmTemplateDirectoriesFunction(out Mock<IGitHubService> gitHubService, out Mock<IServiceLocator> locator);
+            var function = this._fixture.ArrangeGetArmTemplateDirectoriesFunction(out Mock<IGitHubService> gitHubService);
 
             gitHubService.Setup(p => p.GetArmTemplateDirectoriesAsync()).ReturnsAsync(models);
-            locator.Setup(p => p.GetInstance<MediaTypeFormatter>()).Returns(new JsonMediaTypeFormatter());
 
             this.Res = await function.InvokeAsync(this.Req).ConfigureAwait(false);
             this.Res.StatusCode.Should().Be(HttpStatusCode.OK);

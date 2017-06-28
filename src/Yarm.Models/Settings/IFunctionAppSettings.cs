@@ -11,5 +11,10 @@ namespace Yarm.Models.Settings
         /// Gets the <see cref="StorageAccountSettings"/> instance.
         /// </summary>
         StorageAccountSettings StorageAccount { get; }
+
+        /// <summary>
+        /// Gets the <see cref="GitHubSettings"/> instance.
+        /// </summary>
+        GitHubSettings GitHub { get; }
     }
 }

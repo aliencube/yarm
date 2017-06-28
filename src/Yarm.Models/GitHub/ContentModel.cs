@@ -48,7 +48,7 @@ namespace Yarm.Models.GitHub
         /// Gets or sets the download URL of the content.
         /// </summary>
         [JsonProperty("download_url")]
-        public object DownloadUrl { get; set; }
+        public string DownloadUrl { get; set; }
 
         /// <summary>
         /// Gets or sets the content type.

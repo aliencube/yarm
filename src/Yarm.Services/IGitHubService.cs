@@ -16,5 +16,19 @@ namespace Yarm.Services
         /// </summary>
         /// <returns>Returns the list of ARM template directories.</returns>
         Task<List<ContentModel>> GetArmTemplateDirectoriesAsync();
+
+        /// <summary>
+        /// Gets the ARM template.
+        /// </summary>
+        /// <param name="directoryName">GitHub directory name.</param>
+        /// <returns>Returns the ARM template.</returns>
+        Task<ContentModel> GetArmTemplateAsync(string directoryName);
+
+        /// <summary>
+        /// Gets the ARM template as JSON format.
+        /// </summary>
+        /// <param name="downloadUrl">GitHub download URL.</param>
+        /// <returns>Returns the ARM template as JSON format.</returns>
+        Task<string> GetArmTemplateAsJsonAsync(string downloadUrl);
     }
 }

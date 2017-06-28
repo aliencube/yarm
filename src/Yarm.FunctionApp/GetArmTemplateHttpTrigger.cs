@@ -1,18 +1,18 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.Logging;
 
 using Yarm.Functions;
+using Yarm.Functions.Extensions;
 using Yarm.Functions.FunctionFactories;
 
 namespace Yarm.FunctionApp
 {
     /// <summary>
-    /// This represents the HTTP trigger entity for the ConvertYamlToJson event.
+    /// This represents the HTTP trigger entity for the GetArmTemplate event.
     /// </summary>
-    public static class ConvertYamlToJsonHttpTrigger
+    public static class GetArmTemplateHttpTrigger
     {
         /// <summary>
         /// Gets or sets the <see cref="Functions.FunctionFactories.FunctionFactory"/> instance.
@@ -23,11 +23,16 @@ namespace Yarm.FunctionApp
         /// Invokes the HTTP trigger.
         /// </summary>
         /// <param name="req"><see cref="HttpRequestMessage"/> instance.</param>
+        /// <param name="templateName">ARM template name.</param>
         /// <param name="log"><see cref="ILogger"/> instance.</param>
         /// <returns>Returns the <see cref="HttpResponseMessage"/> instance.</returns>
-        public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, ILogger log)
+        public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, string templateName, ILogger log)
         {
-            throw new NotImplementedException();
+            var res = await FunctionFactory.Create<IGetArmTemplateFunction>(log)
+                                           .LoadProperty(p => p.TemplateName = templateName)
+                                           .InvokeAsync(req)
+                                           .ConfigureAwait(false);
+            return res;
         }
     }
 }
