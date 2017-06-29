@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 
 using FluentAssertions;
 
 using Moq;
+
+using Newtonsoft.Json;
 
 using Xunit;
 
@@ -13,6 +16,8 @@ using Yarm.Models.Enums;
 using Yarm.Models.Functions.Responses;
 using Yarm.Models.GitHub;
 using Yarm.Services;
+
+using JsonConverter = Yarm.Converters.JsonConverter;
 
 namespace Yarm.Functions.Tests
 {
@@ -67,10 +72,11 @@ namespace Yarm.Functions.Tests
         /// <param name="contentType">Content type.</param>
         /// <param name="templateName">Template name.</param>
         /// <param name="downloadUrl">Download URL.</param>
-        /// <param name="templateContent">Template content.</param>
+        /// <param name="key">Dictionary key.</param>
+        /// <param name="value">Dictionary value.</param>
         [Theory]
-        [InlineData("hello", "dir", "ll", "abc", "{ \"abc\": \"def\" }")]
-        public async void Given_TemplateName_InvokeAsync_ShouldReturn_Result(string name, string contentType, string templateName, string downloadUrl, string templateContent)
+        [InlineData("hello", "dir", "ll", "abc", "key", "value")]
+        public async void Given_TemplateName_InvokeAsync_ShouldReturn_Result(string name, string contentType, string templateName, string downloadUrl, string key, string value)
         {
             var model = new ContentModel() { Name = name, ContentType = ContentType.Parse(contentType), DownloadUrl = downloadUrl };
 
@@ -79,15 +85,19 @@ namespace Yarm.Functions.Tests
             var function = this._fixture.ArrangeGetArmTemplateFunction(out Mock<IGitHubService> gitHubService);
             function.TemplateName = templateName;
 
+            var dic = new Dictionary<string, string>() { { key, value } };
+            var json = JsonConvert.SerializeObject(dic);
+            var yaml = JsonConverter.ConvertToYaml(json);
+
             gitHubService.Setup(p => p.GetArmTemplateAsync(It.IsAny<string>())).ReturnsAsync(model);
-            gitHubService.Setup(p => p.GetArmTemplateAsJsonAsync(It.IsAny<string>())).ReturnsAsync(templateContent);
+            gitHubService.Setup(p => p.GetArmTemplateAsJsonAsync(It.IsAny<string>())).ReturnsAsync(json);
 
             this.Res = await function.InvokeAsync(this.Req).ConfigureAwait(false);
             this.Res.StatusCode.Should().Be(HttpStatusCode.OK);
-            this.Res.Content.Headers.ContentType.ToString().Should().BeEquivalentTo("text/plain");
+            this.Res.Content.Headers.ContentType.ToString().Should().BeEquivalentTo("application/yaml");
 
             var result = await this.Res.Content.ReadAsStringAsync().ConfigureAwait(false);
-            result.Should().BeEquivalentTo(templateContent);
+            result.Should().BeEquivalentTo(yaml);
         }
     }
 }

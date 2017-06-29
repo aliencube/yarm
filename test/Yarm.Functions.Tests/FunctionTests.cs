@@ -57,7 +57,7 @@ namespace Yarm.Functions.Tests
         /// <returns>Returns the <see cref="HttpRequestMessage"/> instance.</returns>
         protected HttpRequestMessage CreateRequest(string requestUri = null, HttpContent content = null)
         {
-            var config = new HttpConfiguration() { Formatters = { new TextPlainMediaTypeFormatter() } };
+            var config = new HttpConfiguration() { Formatters = { new TextPlainMediaTypeFormatter(), new YamlMediaTypeFormatter() } };
             var context = new HttpRequestContext() { Configuration = config };
             var request = new HttpRequestMessage() { Properties = { { HttpPropertyKeys.RequestContextKey, context } } };
 

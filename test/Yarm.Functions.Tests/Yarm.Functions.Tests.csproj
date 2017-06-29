@@ -143,6 +143,9 @@
     <Reference Include="xunit.execution.desktop, Version=2.2.0.3545, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\xunit.extensibility.execution.2.2.0\lib\net452\xunit.execution.desktop.dll</HintPath>
     </Reference>
+    <Reference Include="YamlDotNet, Version=4.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\YamlDotNet.4.2.1\lib\net35\YamlDotNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\FunctionExtensionsTests.cs" />
@@ -168,6 +171,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Yarm.Converters\Yarm.Converters.csproj">
+      <Project>{9afe89ba-89e7-4158-9bd2-2b15de051cf2}</Project>
+      <Name>Yarm.Converters</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\Yarm.Extensions\Yarm.Extensions.csproj">
       <Project>{dc23fcbb-6fba-487b-b4c1-8be3b5fd8f9a}</Project>
       <Name>Yarm.Extensions</Name>

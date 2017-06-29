@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
+using Yarm.Converters;
 using Yarm.Extensions;
 using Yarm.Functions.FunctionFactories;
 using Yarm.Services;
@@ -44,8 +45,9 @@ namespace Yarm.Functions
 
             var template = await this._gitHubService.GetArmTemplateAsync(this.TemplateName).ConfigureAwait(false);
             var json = await this._gitHubService.GetArmTemplateAsJsonAsync(template.DownloadUrl).ConfigureAwait(false);
+            var yaml = JsonConverter.ConvertToYaml(json);
 
-            return this.CreateOkResponse(req, json, "text/plain");
+            return this.CreateOkResponse(req, yaml, "application/yaml");
         }
     }
 }

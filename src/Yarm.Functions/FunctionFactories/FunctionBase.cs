@@ -11,6 +11,7 @@ using Microsoft.Practices.ServiceLocation;
 
 using Yarm.Extensions;
 using Yarm.Functions.Extensions;
+using Yarm.Functions.Formatters;
 using Yarm.Models.Functions.Responses;
 
 namespace Yarm.Functions.FunctionFactories
@@ -20,7 +21,8 @@ namespace Yarm.Functions.FunctionFactories
     /// </summary>
     public abstract class FunctionBase : IFunction
     {
-        private static List<string> validContentTypes = new[] { "application/json" }.ToList();
+        private static List<string> validContentTypes = new[] { "application/json", "application/yaml" }.ToList();
+        private static List<string> yamlMediaTypes = new[] { "application/x-yaml", "application/yaml", "text/yaml" }.ToList();
 
         private bool _disposed;
 
@@ -249,12 +251,9 @@ namespace Yarm.Functions.FunctionFactories
         /// <returns>The response.</returns>
         protected HttpResponseMessage CreateResponse<T>(HttpRequestMessage req, HttpStatusCode statusCode, T value, string mediaType = null)
         {
-            if (!mediaType.IsNullOrWhiteSpace())
-            {
-                return req.CreateResponse(statusCode, value, mediaType);
-            }
-
-            var formatter = this.ServiceLocator.GetInstance<MediaTypeFormatter>();
+            var formatter = yamlMediaTypes.ContainsEquivalent(mediaType)
+                                ? this.ServiceLocator.GetInstance<YamlMediaTypeFormatter>() as MediaTypeFormatter
+                                : this.ServiceLocator.GetInstance<JsonMediaTypeFormatter>();
 
             return req.CreateResponse(statusCode, value, formatter);
         }

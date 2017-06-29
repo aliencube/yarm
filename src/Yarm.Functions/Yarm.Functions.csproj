@@ -142,6 +142,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Yarm.Converters\Yarm.Converters.csproj">
+      <Project>{9afe89ba-89e7-4158-9bd2-2b15de051cf2}</Project>
+      <Name>Yarm.Converters</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Yarm.Extensions\Yarm.Extensions.csproj">
       <Project>{dc23fcbb-6fba-487b-b4c1-8be3b5fd8f9a}</Project>
       <Name>Yarm.Extensions</Name>

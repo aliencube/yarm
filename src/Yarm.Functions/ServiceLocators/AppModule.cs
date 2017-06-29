@@ -8,6 +8,7 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
 using Yarm.Extensions;
+using Yarm.Functions.Formatters;
 using Yarm.Functions.FunctionFactories;
 using Yarm.Models.Settings;
 using Yarm.Services;
@@ -38,8 +39,10 @@ namespace Yarm.Functions.ServiceLocators
                                      };
             containerBuilder.RegisterAsSingleInstance<JsonSerializerSettings, JsonSerializerSettings>(_ => serializerSettings);
 
-            var mediaTypeFormatter = new JsonMediaTypeFormatter { SerializerSettings = serializerSettings };
-            containerBuilder.RegisterAsSingleInstance<JsonMediaTypeFormatter, MediaTypeFormatter>(_ => mediaTypeFormatter);
+            var jsonMediaTypeFormatter = new JsonMediaTypeFormatter { SerializerSettings = serializerSettings };
+            var yamlMediaTypeFormatter = new YamlMediaTypeFormatter();
+            containerBuilder.RegisterAsSingleInstance<JsonMediaTypeFormatter, JsonMediaTypeFormatter>(_ => jsonMediaTypeFormatter);
+            containerBuilder.RegisterAsSingleInstance<YamlMediaTypeFormatter, YamlMediaTypeFormatter>(_ => yamlMediaTypeFormatter);
 
             var httpClient = new HttpClient();
             containerBuilder.RegisterAsSingleInstance<HttpClient, HttpClient>(_ => httpClient);

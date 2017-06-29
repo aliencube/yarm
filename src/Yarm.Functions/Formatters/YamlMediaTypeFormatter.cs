@@ -20,8 +20,8 @@ namespace Yarm.Functions.Formatters
         /// </summary>
         public YamlMediaTypeFormatter()
         {
-            this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/x-yaml"));
             this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/yaml"));
+            this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/x-yaml"));
             this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/yaml"));
         }
 
