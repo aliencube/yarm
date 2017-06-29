@@ -114,6 +114,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Formatters\YamlMediaTypeFormatter.cs" />
+    <Compile Include="Formatters\TextPlainMediaTypeFormatter.cs" />
     <Compile Include="GetArmTemplateFunction.cs" />
     <Compile Include="IGetArmTemplateFunction.cs" />
     <Compile Include="ResponseMessages.Designer.cs">
@@ -159,5 +161,6 @@
       <LastGenOutput>ResponseMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

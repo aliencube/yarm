@@ -9,6 +9,7 @@
       <Value>querystring</Value>
       <Value>serilog</Value>
       <Value>serilog-extensions-logging</Value>
+      <Value>x-yaml</Value>
       <Value>yaml</Value>
     </CollectionProperty>
     <StringProperty Name="Culture">en-GB</StringProperty>

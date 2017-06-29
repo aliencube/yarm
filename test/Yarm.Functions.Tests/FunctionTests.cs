@@ -5,7 +5,7 @@ using System.Web.Http.Controllers;
 using System.Web.Http.Hosting;
 
 using Yarm.Extensions;
-using Yarm.Functions.Tests.Fixtures;
+using Yarm.Functions.Formatters;
 
 namespace Yarm.Functions.Tests
 {

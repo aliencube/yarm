@@ -155,7 +155,6 @@
     <Compile Include="Fixtures\AppModuleFixture.cs" />
     <Compile Include="Fixtures\LoggerExtensionsFixture.cs" />
     <Compile Include="Fixtures\TestSink.cs" />
-    <Compile Include="Fixtures\TextPlainMediaTypeFormatter.cs" />
     <Compile Include="FunctionFactories\FunctionFactoryTests.cs" />
     <Compile Include="FunctionTests.cs" />
     <Compile Include="GetArmTemplateFunctionTests.cs" />

@@ -4,9 +4,11 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace Yarm.Functions.Tests.Fixtures
+namespace Yarm.Functions.Formatters
 {
     /// <summary>
     /// This represents the formatter entity for "text/plain" mime type.
@@ -34,9 +36,9 @@ namespace Yarm.Functions.Tests.Fixtures
         }
 
         /// <inheritdoc/>
-        public override Task WriteToStreamAsync(Type type, object value, Stream writeStream, HttpContent content, TransportContext transportContext, System.Threading.CancellationToken cancellationToken)
+        public override Task WriteToStreamAsync(Type type, object value, Stream writeStream, HttpContent content, TransportContext transportContext, CancellationToken cancellationToken)
         {
-            var buff = System.Text.Encoding.UTF8.GetBytes(value.ToString());
+            var buff = Encoding.UTF8.GetBytes(value.ToString());
             return writeStream.WriteAsync(buff, 0, buff.Length, cancellationToken);
         }
     }
