@@ -175,6 +175,7 @@
     <Content Include="ls.pubignore.wpp.targets" />
     <Content Include="GetArmTemplateDirectoriesHttpTrigger\function.json" />
     <Content Include="GetArmTemplateHttpTrigger\function.json" />
+    <Content Include="ConvertJsonToYamlHttpTrigger\function.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -187,6 +188,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConvertJsonToYamlHttpTrigger.cs" />
     <Compile Include="GetArmTemplateHttpTrigger.cs" />
     <Compile Include="GetArmTemplateDirectoriesHttpTrigger.cs" />
     <Compile Include="ConvertYamlToJsonHttpTrigger.cs" />

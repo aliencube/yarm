@@ -148,6 +148,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConvertJsonToYamlFunctionTests.cs" />
     <Compile Include="Extensions\FunctionExtensionsTests.cs" />
     <Compile Include="Extensions\LoggerExtensionsTests.cs" />
     <Compile Include="Fixtures\FooFunction.cs" />

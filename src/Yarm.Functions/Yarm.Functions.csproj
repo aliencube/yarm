@@ -114,11 +114,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConvertJsonToYamlFunction.cs" />
     <Compile Include="Formatters\YamlMediaTypeFormatter.cs" />
     <Compile Include="Formatters\TextPlainMediaTypeFormatter.cs" />
     <Compile Include="FunctionFactories\FunctionParameterOptions.cs" />
     <Compile Include="FunctionFactories\GetArmTemplateFunctionParameterOptions.cs" />
     <Compile Include="GetArmTemplateFunction.cs" />
+    <Compile Include="IConvertJsonToYamlFunction.cs" />
     <Compile Include="IConvertYamlToJsonFunction.cs" />
     <Compile Include="IGetArmTemplateFunction.cs" />
     <Compile Include="ResponseMessages.Designer.cs">

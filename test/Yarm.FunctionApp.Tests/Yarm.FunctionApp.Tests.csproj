@@ -126,6 +126,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConvertJsonToYamlHttpTriggerTests.cs" />
     <Compile Include="Fixtures\FunctionTriggerFixture.cs" />
     <Compile Include="FunctionTriggerTests.cs" />
     <Compile Include="ConvertYamlToJsonHttpTriggerTests.cs" />

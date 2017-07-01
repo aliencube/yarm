@@ -74,6 +74,19 @@ namespace Yarm.Functions.Tests.Fixtures
         public Mock<IFunctionAppSettings> FunctionAppSettings { get; }
 
         /// <summary>
+        /// Arranges the <see cref="IConvertJsonToYamlFunction"/> instance.
+        /// </summary>
+        /// <returns>Returns the <see cref="IConvertJsonToYamlFunction"/> instance.</returns>
+        public IConvertJsonToYamlFunction ArrangeConvertJsonToYamlFunction()
+        {
+            var function = new ConvertJsonToYamlFunction()
+                               .SetLoggerToFixture(this.Log)
+                               .SetServiceLocatorToFixture(this.ServiceLocator);
+
+            return function as ConvertJsonToYamlFunction;
+        }
+
+        /// <summary>
         /// Arranges the <see cref="IConvertYamlToJsonFunction"/> instance.
         /// </summary>
         /// <returns>Returns the <see cref="IConvertYamlToJsonFunction"/> instance.</returns>
