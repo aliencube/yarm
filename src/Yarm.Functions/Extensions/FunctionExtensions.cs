@@ -1,6 +1,4 @@
-﻿using System;
-
-using Yarm.Extensions;
+﻿using Yarm.Extensions;
 using Yarm.Functions.FunctionFactories;
 
 namespace Yarm.Functions.Extensions
@@ -11,19 +9,21 @@ namespace Yarm.Functions.Extensions
     public static class FunctionExtensions
     {
         /// <summary>
-        /// Loads a property to the given instance.
+        /// Adds <see cref="FunctionParameterOptions"/> instance.
         /// </summary>
         /// <typeparam name="TFunction">Type of function.</typeparam>
+        /// <typeparam name="TOptions">Type of parameter options.</typeparam>
         /// <param name="instance">Function instance.</param>
-        /// <param name="action">Action expression.</param>
-        /// <returns>Returns the function instance with the property loaded.</returns>
-        public static TFunction LoadProperty<TFunction>(this TFunction instance, Action<TFunction> action)
+        /// <param name="options">Options instance.</param>
+        /// <returns>Returns the function instance with the parameter options added.</returns>
+        public static TFunction AddParameters<TFunction, TOptions>(this TFunction instance, TOptions options)
             where TFunction : IFunction
+            where TOptions : FunctionParameterOptions
         {
             instance.ThrowIfNullOrDefault();
-            action.ThrowIfNullOrDefault();
+            options.ThrowIfNullOrDefault();
 
-            action.Invoke(instance);
+            instance.ParameterOptions = options;
 
             return instance;
         }

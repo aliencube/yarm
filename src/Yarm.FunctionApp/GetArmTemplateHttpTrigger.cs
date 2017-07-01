@@ -29,7 +29,7 @@ namespace Yarm.FunctionApp
         public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, string templateName, ILogger log)
         {
             var res = await FunctionFactory.Create<IGetArmTemplateFunction>(log)
-                                           .LoadProperty(p => p.TemplateName = templateName)
+                                           .AddParameters(new GetArmTemplateFunctionParameterOptions() { TemplateName = templateName })
                                            .InvokeAsync(req)
                                            .ConfigureAwait(false);
             return res;

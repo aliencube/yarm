@@ -7,14 +7,25 @@ using Yarm.Functions.FunctionFactories;
 namespace Yarm.Functions.Tests.Fixtures
 {
     /// <summary>
+    /// This represents the parameter options entity for the <see cref="FooFunction"/> class.
+    /// </summary>
+    public class FooFunctionParameterOptions : FunctionParameterOptions
+    {
+        /// <summary>
+        /// Gets or sets the Bar value.
+        /// </summary>
+        public string Bar { get; set; }
+    }
+
+    /// <summary>
     /// This provides interfaces to the <see cref="FooFunction"/> class.
     /// </summary>
     public interface IFooFunction : IFunction
     {
         /// <summary>
-        /// Gets or sets the bar.
+        /// Gets the <see cref="FooFunctionParameterOptions"/> instance.
         /// </summary>
-        string Bar { get; set; }
+        FooFunctionParameterOptions Parameters { get; }
     }
 
     /// <summary>
@@ -23,9 +34,9 @@ namespace Yarm.Functions.Tests.Fixtures
     public class FooFunction : FunctionBase, IFooFunction
     {
         /// <summary>
-        /// Gets or sets the bar.
+        /// Gets the <see cref="FooFunctionParameterOptions"/> instance.
         /// </summary>
-        public string Bar { get; set; }
+        public FooFunctionParameterOptions Parameters => this.ParameterOptions as FooFunctionParameterOptions;
 
         /// <inheritdoc />
         public override Task<HttpResponseMessage> InvokeAsync(HttpRequestMessage req)

@@ -5,6 +5,7 @@ using FluentAssertions;
 using Xunit;
 
 using Yarm.Functions.Extensions;
+using Yarm.Functions.FunctionFactories;
 using Yarm.Functions.Tests.Fixtures;
 
 namespace Yarm.Functions.Tests.Extensions
@@ -18,14 +19,14 @@ namespace Yarm.Functions.Tests.Extensions
         /// Tests whether the method should throw an exception or not.
         /// </summary>
         [Fact]
-        public void Given_NullParameter_LoadProperty_ShouldThrow_Exception()
+        public void Given_NullParameter_AddParameters_ShouldThrow_Exception()
         {
             var instance = new FooFunction();
 
-            Action action = () => FunctionExtensions.LoadProperty((IFooFunction)null, null);
+            Action action = () => FunctionExtensions.AddParameters((IFooFunction)null, (FunctionParameterOptions)null);
             action.ShouldThrow<ArgumentNullException>();
 
-            action = () => FunctionExtensions.LoadProperty(instance, null);
+            action = () => FunctionExtensions.AddParameters(instance, (FunctionParameterOptions)null);
             action.ShouldThrow<ArgumentNullException>();
         }
 
@@ -35,13 +36,13 @@ namespace Yarm.Functions.Tests.Extensions
         /// <param name="bar">Bar value.</param>
         [Theory]
         [InlineData("hello world")]
-        public void Given_Action_LoadProperty_ShouldReturn_Result(string bar)
+        public void Given_Action_AddParameters_ShouldReturn_Result(string bar)
         {
             var instance = new FooFunction();
 
-            var result = FunctionExtensions.LoadProperty(instance, p => p.Bar = bar);
+            var result = FunctionExtensions.AddParameters(instance, new FooFunctionParameterOptions() { Bar = bar });
 
-            result.Bar.Should().BeEquivalentTo(bar);
+            result.Parameters.Bar.Should().BeEquivalentTo(bar);
         }
     }
 }

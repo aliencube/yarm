@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.Logging;
@@ -27,7 +26,10 @@ namespace Yarm.FunctionApp
         /// <returns>Returns the <see cref="HttpResponseMessage"/> instance.</returns>
         public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, ILogger log)
         {
-            throw new NotImplementedException();
+            var res = await FunctionFactory.Create<IConvertYamlToJsonFunction>(log)
+                                           .InvokeAsync(req)
+                                           .ConfigureAwait(false);
+            return res;
         }
     }
 }

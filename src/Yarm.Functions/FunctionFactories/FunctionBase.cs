@@ -37,6 +37,11 @@ namespace Yarm.Functions.FunctionFactories
         public IServiceLocator ServiceLocator { get; set; }
 
         /// <summary>
+        /// Gets or sets the <see cref="FunctionParameterOptions"/> instance.
+        /// </summary>
+        public FunctionParameterOptions ParameterOptions { protected get; set; }
+
+        /// <summary>
         /// Invokes the function.
         /// </summary>
         /// <param name="req"><see cref="HttpRequestMessage"/> instance.</param>
@@ -87,6 +92,15 @@ namespace Yarm.Functions.FunctionFactories
         protected virtual void ReleaseUnmanagedResources()
         {
             // Release unmanaged resources here.
+        }
+
+        /// <summary>
+        /// Ensures whether the <see cref="FunctionParameterOptions"/> instance has been loaded or not.
+        /// </summary>
+        /// <returns>Returns <c>True</c>, if <see cref="FunctionParameterOptions"/> instance has been loaded; otherwise returns <c>False</c>.</returns>
+        protected bool EnsureParameterOptionsLoaded()
+        {
+            return !this.ParameterOptions.IsNullOrDefault();
         }
 
         /// <summary>

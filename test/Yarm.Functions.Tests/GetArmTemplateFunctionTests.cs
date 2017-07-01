@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 
 using Xunit;
 
+using Yarm.Functions.FunctionFactories;
 using Yarm.Functions.Tests.Fixtures;
 using Yarm.Models.Enums;
 using Yarm.Models.Functions.Responses;
@@ -51,11 +52,30 @@ namespace Yarm.Functions.Tests
         /// Tests whether the method should return result or not.
         /// </summary>
         [Fact]
+        public async void Given_NoParameterOptions_InvokeAsync_ShouldReturn_NotFoundResponse()
+        {
+            this.Req = this.CreateRequest("http://localhost");
+
+            var function = this._fixture.ArrangeGetArmTemplateFunction(out Mock<IGitHubService> gitHubService);
+
+            this.Res = await function.InvokeAsync(this.Req).ConfigureAwait(false);
+            this.Res.StatusCode.Should().Be(HttpStatusCode.NotFound);
+
+            var result = await this.Res.Content.ReadAsAsync<ErrorResponseModel>().ConfigureAwait(false);
+            result.StatusCode.Should().Be((int)HttpStatusCode.NotFound);
+            result.Message.Should().Be(ResponseMessages.ParametersNotFound);
+        }
+
+        /// <summary>
+        /// Tests whether the method should return result or not.
+        /// </summary>
+        [Fact]
         public async void Given_NoTemplateName_InvokeAsync_ShouldReturn_NotFoundResponse()
         {
             this.Req = this.CreateRequest("http://localhost");
 
             var function = this._fixture.ArrangeGetArmTemplateFunction(out Mock<IGitHubService> gitHubService);
+            function.ParameterOptions = new GetArmTemplateFunctionParameterOptions();
 
             this.Res = await function.InvokeAsync(this.Req).ConfigureAwait(false);
             this.Res.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -83,7 +103,7 @@ namespace Yarm.Functions.Tests
             this.Req = this.CreateRequest($"http://localhost");
 
             var function = this._fixture.ArrangeGetArmTemplateFunction(out Mock<IGitHubService> gitHubService);
-            function.TemplateName = templateName;
+            function.ParameterOptions = new GetArmTemplateFunctionParameterOptions() { TemplateName = templateName };
 
             var dic = new Dictionary<string, string>() { { key, value } };
             var json = JsonConvert.SerializeObject(dic);

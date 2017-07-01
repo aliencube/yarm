@@ -61,6 +61,15 @@ namespace Yarm.Functions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parameters not found.
+        /// </summary>
+        public static string ParametersNotFound {
+            get {
+                return ResourceManager.GetString("ParametersNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resource not found.
         /// </summary>
         public static string ResourceNotFound {

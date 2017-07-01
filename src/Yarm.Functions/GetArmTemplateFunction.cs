@@ -25,9 +25,9 @@ namespace Yarm.Functions
         }
 
         /// <summary>
-        /// Gets or sets the template directory name.
+        /// Gets or sets the <see cref="GetArmTemplateFunctionParameterOptions"/> instance.
         /// </summary>
-        public string TemplateName { get; set; }
+        public GetArmTemplateFunctionParameterOptions Parameters => this.ParameterOptions as GetArmTemplateFunctionParameterOptions;
 
         /// <summary>
         /// Invokes the function.
@@ -36,14 +36,21 @@ namespace Yarm.Functions
         /// <returns>Returns the <see cref="HttpResponseMessage"/> instance.</returns>
         public override async Task<HttpResponseMessage> InvokeAsync(HttpRequestMessage req)
         {
-            if (this.TemplateName.IsNullOrWhiteSpace())
+            if (!this.EnsureParameterOptionsLoaded())
+            {
+                this.LogError(ResponseMessages.ParametersNotFound);
+
+                return this.CreateNotFoundResponse(req, ResponseMessages.ParametersNotFound);
+            }
+
+            if (this.Parameters.TemplateName.IsNullOrWhiteSpace())
             {
                 this.LogWarning(ResponseMessages.TemplateNotFound);
 
                 return this.CreateNotFoundResponse(req, ResponseMessages.TemplateNotFound);
             }
 
-            var template = await this._gitHubService.GetArmTemplateAsync(this.TemplateName).ConfigureAwait(false);
+            var template = await this._gitHubService.GetArmTemplateAsync(this.Parameters.TemplateName).ConfigureAwait(false);
             var json = await this._gitHubService.GetArmTemplateAsJsonAsync(template.DownloadUrl).ConfigureAwait(false);
             var yaml = JsonConverter.ConvertToYaml(json);
 

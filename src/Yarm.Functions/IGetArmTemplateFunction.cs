@@ -8,8 +8,8 @@ namespace Yarm.Functions
     public interface IGetArmTemplateFunction : IFunction
     {
         /// <summary>
-        /// Gets or sets the template directory name.
+        /// Gets the <see cref="GetArmTemplateFunctionParameterOptions"/> instance.
         /// </summary>
-        string TemplateName { get; set; }
+        GetArmTemplateFunctionParameterOptions Parameters { get; }
     }
 }

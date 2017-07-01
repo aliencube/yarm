@@ -23,6 +23,11 @@ namespace Yarm.Functions.FunctionFactories
         IServiceLocator ServiceLocator { get; set; }
 
         /// <summary>
+        /// Sets the <see cref="FunctionParameterOptions"/> instance.
+        /// </summary>
+        FunctionParameterOptions ParameterOptions { set; }
+
+        /// <summary>
         /// Invokes the function.
         /// </summary>
         /// <param name="req"><see cref="HttpRequestMessage"/> instance.</param>
