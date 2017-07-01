@@ -160,6 +160,7 @@
     <Compile Include="Fixtures\TestSink.cs" />
     <Compile Include="FunctionFactories\FunctionFactoryTests.cs" />
     <Compile Include="FunctionTests.cs" />
+    <Compile Include="ConvertYamlToJsonFunctionTests.cs" />
     <Compile Include="GetArmTemplateFunctionTests.cs" />
     <Compile Include="GetArmTemplateDirectoriesFunctionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

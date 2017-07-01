@@ -19,7 +19,7 @@ namespace Yarm.Functions
         public override async Task<HttpResponseMessage> InvokeAsync(HttpRequestMessage req)
         {
             var containsPayload = await this.ContainsPayloadAsync(req).ConfigureAwait(false);
-            if (containsPayload)
+            if (!containsPayload)
             {
                 this.LogError(ResponseMessages.RequestPayloadNotFound);
 
