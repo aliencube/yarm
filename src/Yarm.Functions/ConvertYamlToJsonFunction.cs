@@ -1,6 +1,8 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
+using Newtonsoft.Json.Linq;
+
 using Yarm.Converters;
 using Yarm.Functions.FunctionFactories;
 
@@ -35,8 +37,9 @@ namespace Yarm.Functions
 
             var yaml = await req.Content.ReadAsStringAsync().ConfigureAwait(false);
             var json = YamlConverter.ConvertToJson(yaml);
+            var jo = JObject.Parse(json);
 
-            var res = this.CreateOkResponse(req, json);
+            var res = this.CreateOkResponse(req, jo);
 
             return res;
         }

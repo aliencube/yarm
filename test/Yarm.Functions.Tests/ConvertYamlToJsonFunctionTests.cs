@@ -4,7 +4,6 @@ using System.Text;
 
 using FluentAssertions;
 
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 using Xunit;
@@ -88,8 +87,7 @@ namespace Yarm.Functions.Tests
             this.Res.StatusCode.Should().Be(HttpStatusCode.OK);
 
             var result = await this.Res.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var deserialised = JsonConvert.DeserializeObject<string>(result);
-            var json = JObject.Parse(deserialised);
+            var json = JObject.Parse(result);
             var token = json.GetValue(key);
 
             token.Should().NotBeNull();
