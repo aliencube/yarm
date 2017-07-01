@@ -61,7 +61,16 @@ namespace Yarm.Functions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parameters not found.
+        ///   Looks up a localized string similar to Request payload content type is invalid.
+        /// </summary>
+        public static string InvalidRequestPayloadContentType {
+            get {
+                return ResourceManager.GetString("InvalidRequestPayloadContentType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameters cannot be found.
         /// </summary>
         public static string ParametersNotFound {
             get {
@@ -70,7 +79,16 @@ namespace Yarm.Functions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resource not found.
+        ///   Looks up a localized string similar to Request payload is missing.
+        /// </summary>
+        public static string RequestPayloadNotFound {
+            get {
+                return ResourceManager.GetString("RequestPayloadNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resource cannot be found.
         /// </summary>
         public static string ResourceNotFound {
             get {
@@ -79,7 +97,7 @@ namespace Yarm.Functions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ARM template not found.
+        ///   Looks up a localized string similar to ARM template cannot be found.
         /// </summary>
         public static string TemplateNotFound {
             get {

@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
+using Yarm.Converters;
 using Yarm.Functions.FunctionFactories;
 
 namespace Yarm.Functions
@@ -15,9 +16,29 @@ namespace Yarm.Functions
         /// </summary>
         /// <param name="req"><see cref="HttpRequestMessage"/> instance.</param>
         /// <returns>Returns the <see cref="HttpResponseMessage"/> instance.</returns>
-        public override Task<HttpResponseMessage> InvokeAsync(HttpRequestMessage req)
+        public override async Task<HttpResponseMessage> InvokeAsync(HttpRequestMessage req)
         {
-            throw new System.NotImplementedException();
+            var containsPayload = await this.ContainsPayloadAsync(req).ConfigureAwait(false);
+            if (containsPayload)
+            {
+                this.LogError(ResponseMessages.RequestPayloadNotFound);
+
+                return this.CreateBadRequestResponse(req, ResponseMessages.RequestPayloadNotFound);
+            }
+
+            if (!this.HasValidContentType(req))
+            {
+                this.LogError(ResponseMessages.InvalidRequestPayloadContentType);
+
+                return this.CreateBadRequestResponse(req, ResponseMessages.InvalidRequestPayloadContentType);
+            }
+
+            var yaml = await req.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var json = YamlConverter.ConvertToJson(yaml);
+
+            var res = this.CreateOkResponse(req, json);
+
+            return res;
         }
     }
 }

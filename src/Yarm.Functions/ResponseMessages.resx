@@ -117,13 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="InvalidRequestPayloadContentType" xml:space="preserve">
+    <value>Request payload content type is invalid</value>
+  </data>
   <data name="ParametersNotFound" xml:space="preserve">
-    <value>Parameters not found</value>
+    <value>Parameters cannot be found</value>
+  </data>
+  <data name="RequestPayloadNotFound" xml:space="preserve">
+    <value>Request payload is missing</value>
   </data>
   <data name="ResourceNotFound" xml:space="preserve">
-    <value>Resource not found</value>
+    <value>Resource cannot be found</value>
   </data>
   <data name="TemplateNotFound" xml:space="preserve">
-    <value>ARM template not found</value>
+    <value>ARM template cannot be found</value>
   </data>
 </root>
