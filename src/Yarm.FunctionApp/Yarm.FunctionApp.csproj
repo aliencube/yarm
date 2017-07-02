@@ -176,6 +176,7 @@
     <Content Include="GetArmTemplateDirectoriesHttpTrigger\function.json" />
     <Content Include="GetArmTemplateHttpTrigger\function.json" />
     <Content Include="ConvertJsonToYamlHttpTrigger\function.json" />
+    <Content Include="GetArmTemplateDirectoriesTimerTrigger\function.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -189,6 +190,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConvertJsonToYamlHttpTrigger.cs" />
+    <Compile Include="GetArmTemplateDirectoriesTimerTrigger.cs" />
     <Compile Include="GetArmTemplateHttpTrigger.cs" />
     <Compile Include="GetArmTemplateDirectoriesHttpTrigger.cs" />
     <Compile Include="ConvertYamlToJsonHttpTrigger.cs" />

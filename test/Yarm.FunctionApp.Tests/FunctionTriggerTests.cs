@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Net.Http;
 
+using Microsoft.Azure.WebJobs;
+
 using Yarm.Extensions;
 
 namespace Yarm.FunctionApp.Tests
@@ -21,6 +23,11 @@ namespace Yarm.FunctionApp.Tests
         /// Gets or sets the <see cref="HttpResponseMessage"/> instance.
         /// </summary>
         protected HttpResponseMessage Res { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="TimerInfo"/> instance.
+        /// </summary>
+        protected TimerInfo Timer { get; set; }
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.

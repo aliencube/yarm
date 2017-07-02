@@ -42,6 +42,30 @@
     <Reference Include="FluentAssertions.Core, Version=4.19.2.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\FluentAssertions.4.19.2\lib\net45\FluentAssertions.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Azure.KeyVault.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Azure.KeyVault.Core.1.0.0\lib\net40\Microsoft.Azure.KeyVault.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.WebJobs, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Azure.WebJobs.Core.2.1.0-beta1\lib\net45\Microsoft.Azure.WebJobs.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.WebJobs.Extensions, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Azure.WebJobs.Extensions.2.1.0-beta1\lib\net45\Microsoft.Azure.WebJobs.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.WebJobs.Host, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Azure.WebJobs.2.1.0-beta1\lib\net45\Microsoft.Azure.WebJobs.Host.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.Edm, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Data.Edm.5.6.4\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Data.OData.5.6.4\lib\net40\Microsoft.Data.OData.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.Services.Client, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Data.Services.Client.5.6.4\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Extensions.Logging.Abstractions.1.1.1\lib\netstandard1.1\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
     </Reference>
@@ -51,8 +75,17 @@
     <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=7.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\WindowsAzure.Storage.7.2.1\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
+    </Reference>
     <Reference Include="Moq, Version=4.7.63.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Moq.4.7.63\lib\net45\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="NCrontab, Version=3.2.20120.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ncrontab.3.3.0\lib\net35\NCrontab.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.AppContext, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -104,6 +137,14 @@
     <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
     </Reference>
+    <Reference Include="System.Spatial, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Spatial.5.6.4\lib\net40\System.Spatial.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Dataflow, Version=4.5.24.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Tpl.Dataflow.4.5.24\lib\portable-net45+win8+wpa81\System.Threading.Tasks.Dataflow.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -130,6 +171,7 @@
     <Compile Include="Fixtures\FunctionTriggerFixture.cs" />
     <Compile Include="FunctionTriggerTests.cs" />
     <Compile Include="ConvertYamlToJsonHttpTriggerTests.cs" />
+    <Compile Include="GetArmTemplateDirectoriesTimerTriggerTests.cs" />
     <Compile Include="GetArmTemplateHttpTriggerTests.cs" />
     <Compile Include="GetArmTemplateDirectoriesHttpTriggerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

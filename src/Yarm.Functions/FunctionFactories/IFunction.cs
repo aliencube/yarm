@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using Microsoft.Practices.ServiceLocation;
 
@@ -33,5 +34,12 @@ namespace Yarm.Functions.FunctionFactories
         /// <param name="req"><see cref="HttpRequestMessage"/> instance.</param>
         /// <returns>Returns the <see cref="HttpResponseMessage"/> instance.</returns>
         Task<HttpResponseMessage> InvokeAsync(HttpRequestMessage req);
+
+        /// <summary>
+        /// Invokes the function.
+        /// </summary>
+        /// <param name="info"><see cref="TimerInfo"/> instance.</param>
+        /// <returns>Returns the <see cref="Task"/>.</returns>
+        Task InvokeAsync(TimerInfo info);
     }
 }

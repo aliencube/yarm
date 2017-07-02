@@ -1,0 +1,15 @@
+﻿{
+  "disabled": false,
+
+  "scriptFile": "..\\bin\\Yarm.FunctionApp.dll",
+  "entryPoint": "Yarm.FunctionApp.GetArmTemplateDirectoriesTimerTrigger.Run",
+
+  "bindings": [
+    {
+      "name": "timer",
+      "type": "timerTrigger",
+      "direction": "in",
+      "schedule": "0/10 * * * * *"
+    }
+  ]
+}

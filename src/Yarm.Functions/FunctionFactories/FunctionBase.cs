@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Threading.Tasks;
 
+using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using Microsoft.Practices.ServiceLocation;
 
@@ -46,7 +47,20 @@ namespace Yarm.Functions.FunctionFactories
         /// </summary>
         /// <param name="req"><see cref="HttpRequestMessage"/> instance.</param>
         /// <returns>Returns the <see cref="HttpResponseMessage"/> instance.</returns>
-        public abstract Task<HttpResponseMessage> InvokeAsync(HttpRequestMessage req);
+        public virtual Task<HttpResponseMessage> InvokeAsync(HttpRequestMessage req)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Invokes the function.
+        /// </summary>
+        /// <param name="info"><see cref="TimerInfo"/> instance.</param>
+        /// <returns>Returns the <see cref="Task"/>.</returns>
+        public virtual Task InvokeAsync(TimerInfo info)
+        {
+            return Task.CompletedTask;
+        }
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
